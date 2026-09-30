@@ -603,6 +603,13 @@ body {
   padding: 1.5rem;
 }
 
+.cheatsheet-tab-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
 .tab-content.active {
   display: block;
 }
@@ -643,6 +650,14 @@ body {
 }
 
 /* FAQ Accordion */
+.faq-heading {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
 .faq-list {
   display: flex;
   flex-direction: column;
