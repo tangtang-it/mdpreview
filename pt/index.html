@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="github-light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MDPreview - Visualizador e Editor de Markdown Online Grátis</title>
+  <meta name="description" content="Visualizador e editor de Markdown instantâneo e elegante no seu navegador. Compatível com GitHub Flavored Markdown (GFM), destaque de sintaxe e exportação em 1 clique. 100% privado.">
+  <meta name="keywords" content="visualizador markdown, editor markdown online, converter pdf em markdown, transformar markdown, previsualizar md">
+  <link rel="canonical" href="https://mdpreview.dev/pt/">
+  
+  <!-- Hreflang Matrix -->
+  <link rel="alternate" hreflang="en" href="https://mdpreview.dev/" />
+  <link rel="alternate" hreflang="es" href="https://mdpreview.dev/es/" />
+  <link rel="alternate" hreflang="pt" href="https://mdpreview.dev/pt/" />
+  <link rel="alternate" hreflang="x-default" href="https://mdpreview.dev/" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Structured Data: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "MDPreview Português",
+    "url": "https://mdpreview.dev/pt/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "description": "Visualizador e editor de Markdown gratuito e instantâneo do lado do cliente compatível com GitHub Flavored Markdown.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <a href="/pt/" class="brand">
+      <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="32" height="32">
+      <span>MDPreview</span>
+      <span class="brand-badge">PT</span>
+    </a>
+
+    <div class="header-actions">
+      <select id="sampleSelect" class="select-control" aria-label="Carregar Exemplo">
+        <option value="readme">Exemplo: Guia README</option>
+        <option value="math">Exemplo: Fórmulas Matemáticas</option>
+        <option value="llm">Exemplo: Resposta de IA</option>
+      </select>
+
+      <select id="themeSelect" class="select-control" aria-label="Tema Visual">
+        <option value="github-light">Tema: GitHub Claro</option>
+        <option value="github-dark">Tema: GitHub Escuro</option>
+        <option value="sepia">Tema: Sépia Aconchegante</option>
+        <option value="cyber">Tema: Meia-noite</option>
+      </select>
+
+      <div class="btn-group">
+        <button id="btnModeSplit" class="btn-icon-text active" title="Tela Dividida">
+          <iconify-icon icon="solar:align-horizontal-center-bold"></iconify-icon>
+          <span>Dividir</span>
+        </button>
+        <button id="btnModePreview" class="btn-icon-text" title="Apenas Visualização">
+          <iconify-icon icon="solar:eye-bold"></iconify-icon>
+          <span>Ver</span>
+        </button>
+        <button id="btnModeEditor" class="btn-icon-text" title="Apenas Editor">
+          <iconify-icon icon="solar:pen-bold"></iconify-icon>
+          <span>Editar</span>
+        </button>
+      </div>
+
+      <input type="file" id="fileInput" accept=".md,.markdown,.txt" style="display: none;">
+      <button id="btnOpenFile" class="btn-icon-text btn-outline" title="Abrir Arquivo">
+        <iconify-icon icon="solar:folder-open-bold"></iconify-icon>
+        <span>Abrir</span>
+      </button>
+
+      <button id="btnCopyHtml" class="btn-icon-text btn-outline" title="Copiar HTML Formatado">
+        <iconify-icon icon="solar:copy-bold"></iconify-icon>
+        <span>Copiar HTML</span>
+      </button>
+
+      <button id="btnExportHtml" class="btn-icon-text btn-primary" title="Exportar HTML Autônomo">
+        <iconify-icon icon="solar:download-square-bold"></iconify-icon>
+        <span>Exportar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Toolbar / Stats Bar -->
+  <div class="workspace-toolbar">
+    <div class="toolbar-stats">
+      <span class="stat-item"><iconify-icon icon="solar:document-text-linear"></iconify-icon> Palavras: <strong id="statWords" class="stat-value">0</strong></span>
+      <span class="stat-item"><iconify-icon icon="solar:text-square-linear"></iconify-icon> Caracteres: <strong id="statChars" class="stat-value">0</strong></span>
+      <span class="stat-item"><iconify-icon icon="solar:clock-circle-linear"></iconify-icon> Leitura: <strong id="statReadTime" class="stat-value">0 min</strong></span>
+    </div>
+
+    <div class="toolbar-controls">
+      <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copiar Markdown">
+        <iconify-icon icon="solar:clipboard-text-linear"></iconify-icon>
+        <span>Copiar MD</span>
+      </button>
+      <button id="btnDownloadMd" class="btn-icon-text btn-outline" title="Baixar .md">
+        <iconify-icon icon="solar:file-download-linear"></iconify-icon>
+        <span>Baixar</span>
+      </button>
+      <button id="btnClear" class="btn-icon-text btn-outline" title="Limpar Editor">
+        <iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>
+        <span>Limpar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Workspace Container -->
+  <main id="workspace" class="workspace-container mode-split">
+    <div class="pane pane-editor">
+      <textarea id="editor" class="editor-textarea" placeholder="Digite ou cole seu Markdown aqui, ou arraste um arquivo .md..." spellcheck="false"></textarea>
+    </div>
+    <div class="pane pane-preview">
+      <div id="preview" class="markdown-body"></div>
+    </div>
+  </main>
+
+  <!-- SEO Content Section -->
+  <section class="seo-section">
+    <div class="seo-container">
+      <div class="section-header">
+        <h1 class="section-title">O Visualizador de Markdown Moderno e Sem Atrasos</h1>
+        <p class="section-subtitle">Construído para desenvolvedores, escritores técnicos e pesquisadores que exigem renderização ultrarrápida, privacidade de dados e total suporte ao GitHub Flavored Markdown.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
+          <h2 class="feature-title">Privacidade 100% Local</h2>
+          <p class="feature-desc">O processamento de arquivos é realizado no navegador sem envio a servidores remotos.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:bolt-circle-bold"></iconify-icon></div>
+          <h2 class="feature-title">Sincronização em Tempo Real</h2>
+          <p class="feature-desc">Rolagem sincronizada e resposta imediata sem atrasos em textos extensos.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:code-file-bold"></iconify-icon></div>
+          <h2 class="feature-title">Padrão GitHub (GFM)</h2>
+          <p class="feature-desc">Suporte a tabelas, listas de tarefas, links e destaque em mais de 180 linguagens de código.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="/pt/" class="brand">
+            <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="28" height="28">
+            <span>MDPreview</span>
+          </a>
+          <p>Visualizador e Editor de Markdown Online Grátis. Construído para a comunidade global de desenvolvedores.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h4>Produto</h4>
+            <ul>
+              <li><a href="/pt/">Editor ao Vivo</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Idiomas</h4>
+            <ul>
+              <li><a href="/">English</a></li>
+              <li><a href="/es/">Español</a></li>
+              <li><a href="/pt/">Português</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="/about.html">Sobre Nós</a></li>
+              <li><a href="/privacy.html">Privacidade</a></li>
+              <li><a href="/terms.html">Termos</a></li>
+              <li><a href="/contact.html">Contato</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 MDPreview. Desenvolvido com ❤️ por 糖糖it.</div>
+        <div class="lang-selector">
+          <span>Idioma:</span>
+          <a href="/" class="lang-link">EN</a>
+          <a href="/es/" class="lang-link">ES</a>
+          <a href="/pt/" class="lang-link active">PT</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

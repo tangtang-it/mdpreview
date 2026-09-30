@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="github-light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MDPreview - Visor y Editor de Markdown en Línea Gratuito</title>
+  <meta name="description" content="Visor y editor de Markdown instantáneo y elegante en tu navegador. Compatible con GitHub Flavored Markdown (GFM), resaltado de sintaxis, tablas y exportación con un clic. 100% privado.">
+  <meta name="keywords" content="visor markdown, editor markdown online, previsualizar markdown, leer archivo md, transformar markdown">
+  <link rel="canonical" href="https://mdpreview.dev/es/">
+  
+  <!-- Hreflang Matrix -->
+  <link rel="alternate" hreflang="en" href="https://mdpreview.dev/" />
+  <link rel="alternate" hreflang="es" href="https://mdpreview.dev/es/" />
+  <link rel="alternate" hreflang="pt" href="https://mdpreview.dev/pt/" />
+  <link rel="alternate" hreflang="x-default" href="https://mdpreview.dev/" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Structured Data: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "MDPreview Español",
+    "url": "https://mdpreview.dev/es/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "description": "Visor y editor de Markdown del lado del cliente gratuito e instantáneo compatible con GitHub Flavored Markdown.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué es MDPreview y cómo funciona?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MDPreview es un visor y editor de Markdown gratuito basado en web. Se ejecuta al 100% en tu navegador sin enviar datos a servidores remotos."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Es compatible con GitHub Flavored Markdown (GFM)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, MDPreview incluye soporte completo para tablas, listas de tareas, bloques de código con resaltado y enlaces automáticos."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <a href="/es/" class="brand">
+      <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="32" height="32">
+      <span>MDPreview</span>
+      <span class="brand-badge">ES</span>
+    </a>
+
+    <div class="header-actions">
+      <select id="sampleSelect" class="select-control" aria-label="Cargar Ejemplo">
+        <option value="readme">Ejemplo: Guía README</option>
+        <option value="math">Ejemplo: Fórmulas Matemáticas</option>
+        <option value="llm">Ejemplo: Respuesta de IA</option>
+      </select>
+
+      <select id="themeSelect" class="select-control" aria-label="Elegir Tema">
+        <option value="github-light">Tema: GitHub Claro</option>
+        <option value="github-dark">Tema: GitHub Oscuro</option>
+        <option value="sepia">Tema: Sepia Cálido</option>
+        <option value="cyber">Tema: Medianoche</option>
+      </select>
+
+      <div class="btn-group">
+        <button id="btnModeSplit" class="btn-icon-text active" title="Pantalla Dividida">
+          <iconify-icon icon="solar:align-horizontal-center-bold"></iconify-icon>
+          <span>Dividir</span>
+        </button>
+        <button id="btnModePreview" class="btn-icon-text" title="Solo Vista Previa">
+          <iconify-icon icon="solar:eye-bold"></iconify-icon>
+          <span>Vista</span>
+        </button>
+        <button id="btnModeEditor" class="btn-icon-text" title="Solo Editor">
+          <iconify-icon icon="solar:pen-bold"></iconify-icon>
+          <span>Editor</span>
+        </button>
+      </div>
+
+      <input type="file" id="fileInput" accept=".md,.markdown,.txt" style="display: none;">
+      <button id="btnOpenFile" class="btn-icon-text btn-outline" title="Abrir Archivo">
+        <iconify-icon icon="solar:folder-open-bold"></iconify-icon>
+        <span>Abrir</span>
+      </button>
+
+      <button id="btnCopyHtml" class="btn-icon-text btn-outline" title="Copiar HTML Formateado">
+        <iconify-icon icon="solar:copy-bold"></iconify-icon>
+        <span>Copiar HTML</span>
+      </button>
+
+      <button id="btnExportHtml" class="btn-icon-text btn-primary" title="Exportar HTML Autónomo">
+        <iconify-icon icon="solar:download-square-bold"></iconify-icon>
+        <span>Exportar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Toolbar / Stats Bar -->
+  <div class="workspace-toolbar">
+    <div class="toolbar-stats">
+      <span class="stat-item"><iconify-icon icon="solar:document-text-linear"></iconify-icon> Palabras: <strong id="statWords" class="stat-value">0</strong></span>
+      <span class="stat-item"><iconify-icon icon="solar:text-square-linear"></iconify-icon> Caracteres: <strong id="statChars" class="stat-value">0</strong></span>
+      <span class="stat-item"><iconify-icon icon="solar:clock-circle-linear"></iconify-icon> Tiempo: <strong id="statReadTime" class="stat-value">0 min</strong></span>
+    </div>
+
+    <div class="toolbar-controls">
+      <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copiar Markdown">
+        <iconify-icon icon="solar:clipboard-text-linear"></iconify-icon>
+        <span>Copiar MD</span>
+      </button>
+      <button id="btnDownloadMd" class="btn-icon-text btn-outline" title="Descargar .md">
+        <iconify-icon icon="solar:file-download-linear"></iconify-icon>
+        <span>Descargar</span>
+      </button>
+      <button id="btnClear" class="btn-icon-text btn-outline" title="Limpiar Editor">
+        <iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>
+        <span>Limpiar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Workspace Container -->
+  <main id="workspace" class="workspace-container mode-split">
+    <div class="pane pane-editor">
+      <textarea id="editor" class="editor-textarea" placeholder="Escribe o pega tu Markdown aquí, o arrastra un archivo .md..." spellcheck="false"></textarea>
+    </div>
+    <div class="pane pane-preview">
+      <div id="preview" class="markdown-body"></div>
+    </div>
+  </main>
+
+  <!-- SEO Content Section -->
+  <section class="seo-section">
+    <div class="seo-container">
+      <div class="section-header">
+        <h1 class="section-title">El Visor de Markdown Moderno y Sin Retardos</h1>
+        <p class="section-subtitle">Diseñado para desarrolladores, redactores técnicos y creadores de contenido de inteligencia artificial que exigen máxima privacidad y compatibilidad con GitHub Flavored Markdown.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
+          <h2 class="feature-title">Privacidad Local 100%</h2>
+          <p class="feature-desc">Todo el procesamiento de archivos se ejecuta en la memoria local de tu navegador. Ningún documento viaja por la red.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:bolt-circle-bold"></iconify-icon></div>
+          <h2 class="feature-title">Renderizado Instantáneo</h2>
+          <p class="feature-desc">Desplazamiento sincronizado y respuesta inmediata sin retraso en documentos técnicos de gran tamaño.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:code-file-bold"></iconify-icon></div>
+          <h2 class="feature-title">Soporte GitHub Flavored</h2>
+          <p class="feature-desc">Tablas ordenadas, listas de tareas interactivas, notas al pie y resaltado de código en más de 180 lenguajes.</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Guía de Sintaxis Markdown Rápida</h2>
+        <p class="section-subtitle">Haz clic en cualquier fragmento de sintaxis a continuación para copiarlo directamente.</p>
+      </div>
+
+      <div class="cheatsheet-box">
+        <nav class="cheatsheet-tabs" aria-label="Categorías de Sintaxis">
+          <button class="tab-btn active" data-tab="basic">Formato Básico</button>
+          <button class="tab-btn" data-tab="headers">Encabezados</button>
+          <button class="tab-btn" data-tab="tables">Tablas y Tareas</button>
+          <button class="tab-btn" data-tab="code">Código</button>
+        </nav>
+
+        <div id="tab-basic" class="tab-content active">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Sintaxis Markdown (Clic para copiar)</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Negrita</strong></td>
+                <td><code class="syntax-code">**Texto en negrita**</code></td>
+                <td><strong>Texto en negrita</strong></td>
+              </tr>
+              <tr>
+                <td><em>Cursiva</em></td>
+                <td><code class="syntax-code">*Texto en cursiva*</code></td>
+                <td><em>Texto en cursiva</em></td>
+              </tr>
+              <tr>
+                <td>Código en línea</td>
+                <td><code class="syntax-code">`const ok = true;`</code></td>
+                <td><code>const ok = true;</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="tab-headers" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Sintaxis Markdown</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Título H1</td>
+                <td><code class="syntax-code"># Título Principal</code></td>
+                <td><span style="font-size: 1.3rem; font-weight: 700;">Título Principal</span></td>
+              </tr>
+              <tr>
+                <td>Título H2</td>
+                <td><code class="syntax-code">## Subtítulo Secundario</code></td>
+                <td><span style="font-size: 1.15rem; font-weight: 600;">Subtítulo Secundario</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="tab-tables" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Sintaxis Markdown</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tabla</td>
+                <td><code class="syntax-code">| Col 1 | Col 2 |
+| :--- | :--- |</code></td>
+                <td>Tabla estructurada</td>
+              </tr>
+              <tr>
+                <td>Tarea Pendiente</td>
+                <td><code class="syntax-code">- [ ] Tarea pendiente</code></td>
+                <td>☐ Tarea pendiente</td>
+              </tr>
+              <tr>
+                <td>Tarea Completa</td>
+                <td><code class="syntax-code">- [x] Tarea hecha</code></td>
+                <td>☑ Tarea hecha</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="tab-code" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Sintaxis Markdown</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bloque de Código</td>
+                <td><code class="syntax-code">```python
+print('Hola')
+```</code></td>
+                <td>Bloque con resaltado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="/es/" class="brand">
+            <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="28" height="28">
+            <span>MDPreview</span>
+          </a>
+          <p>Visor y Editor de Markdown en Línea Gratuito. Construido para desarrolladores y creadores globales.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h4>Producto</h4>
+            <ul>
+              <li><a href="/es/">Editor en Vivo</a></li>
+              <li><a href="#tab-basic">Guía de Sintaxis</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Idiomas</h4>
+            <ul>
+              <li><a href="/">English</a></li>
+              <li><a href="/es/">Español</a></li>
+              <li><a href="/pt/">Português</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="/about.html">Acerca de</a></li>
+              <li><a href="/privacy.html">Privacidad</a></li>
+              <li><a href="/terms.html">Términos</a></li>
+              <li><a href="/contact.html">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 MDPreview. Desarrollado con ❤️ por 糖糖it.</div>
+        <div class="lang-selector">
+          <span>Idioma:</span>
+          <a href="/" class="lang-link">EN</a>
+          <a href="/es/" class="lang-link active">ES</a>
+          <a href="/pt/" class="lang-link">PT</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

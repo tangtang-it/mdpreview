@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="github-light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MDPreview - Free Online Markdown Viewer & Live Editor</title>
+  <meta name="description" content="Instant, beautiful Markdown viewer and live editor in your browser. Supports GitHub Flavored Markdown (GFM), syntax highlighting, tables, math formulas, and one-click export. 100% private.">
+  <meta name="keywords" content="markdown viewer, markdown preview, markdown live editor, markdown viewer online, gfm preview, markdown reader, view md file">
+  <link rel="canonical" href="https://mdpreview.dev/">
+  
+  <!-- Hreflang Matrix -->
+  <link rel="alternate" hreflang="en" href="https://mdpreview.dev/" />
+  <link rel="alternate" hreflang="es" href="https://mdpreview.dev/es/" />
+  <link rel="alternate" hreflang="pt" href="https://mdpreview.dev/pt/" />
+  <link rel="alternate" hreflang="x-default" href="https://mdpreview.dev/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mdpreview.dev/">
+  <meta property="og:title" content="MDPreview - Free Online Markdown Viewer & Live Editor">
+  <meta property="og:description" content="Instant, beautiful Markdown viewer and live editor in your browser. 100% private, zero-latency rendering.">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MDPreview - Free Online Markdown Viewer & Live Editor">
+  <meta name="twitter:description" content="Instant, beautiful Markdown viewer and live editor in your browser. 100% private, zero-latency rendering.">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Structured Data: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "MDPreview",
+    "url": "https://mdpreview.dev/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "description": "Free, instant client-side Markdown viewer and live editor supporting GitHub Flavored Markdown, code highlighting, and export.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is MDPreview and how does it work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MDPreview is a free, modern web-based Markdown viewer and real-time editor. It runs entirely in your browser using client-side JavaScript, rendering Markdown documents instantly without sending your sensitive data to any remote server."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does MDPreview support GitHub Flavored Markdown (GFM)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, MDPreview provides full GitHub Flavored Markdown (GFM) compliance, including tables, task lists with checkboxes, fenced code blocks with automatic syntax highlighting, autolinks, and strikethroughs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I export my Markdown to HTML or download files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can copy formatted HTML, copy raw Markdown, download the current document as a .md file, or export it as a standalone styled HTML file with one click."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data private and secure?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. MDPreview operates 100% on the client side. Your text and documents are parsed in your browser's local memory and never uploaded to any backend database or third-party server."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <a href="/" class="brand">
+      <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="32" height="32">
+      <span>MDPreview</span>
+      <span class="brand-badge">PRO</span>
+    </a>
+
+    <div class="header-actions">
+      <!-- Samples Picker -->
+      <select id="sampleSelect" class="select-control" aria-label="Load Sample Markdown">
+        <option value="readme">Sample: README Guide</option>
+        <option value="math">Sample: Math & Notes</option>
+        <option value="llm">Sample: AI Chat Output</option>
+      </select>
+
+      <!-- Theme Switcher -->
+      <select id="themeSelect" class="select-control" aria-label="Select Color Theme">
+        <option value="github-light">Theme: GitHub Light</option>
+        <option value="github-dark">Theme: GitHub Dark</option>
+        <option value="sepia">Theme: Warm Sepia</option>
+        <option value="cyber">Theme: Midnight Dark</option>
+      </select>
+
+      <!-- View Mode Buttons -->
+      <div class="btn-group">
+        <button id="btnModeSplit" class="btn-icon-text active" title="Split Screen (50/50)">
+          <iconify-icon icon="solar:align-horizontal-center-bold"></iconify-icon>
+          <span>Split</span>
+        </button>
+        <button id="btnModePreview" class="btn-icon-text" title="Preview Only">
+          <iconify-icon icon="solar:eye-bold"></iconify-icon>
+          <span>Preview</span>
+        </button>
+        <button id="btnModeEditor" class="btn-icon-text" title="Editor Only">
+          <iconify-icon icon="solar:pen-bold"></iconify-icon>
+          <span>Editor</span>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <input type="file" id="fileInput" accept=".md,.markdown,.txt" style="display: none;">
+      <button id="btnOpenFile" class="btn-icon-text btn-outline" title="Open Local Markdown File">
+        <iconify-icon icon="solar:folder-open-bold"></iconify-icon>
+        <span>Open</span>
+      </button>
+
+      <button id="btnCopyHtml" class="btn-icon-text btn-outline" title="Copy Formatted HTML">
+        <iconify-icon icon="solar:copy-bold"></iconify-icon>
+        <span>Copy HTML</span>
+      </button>
+
+      <button id="btnExportHtml" class="btn-icon-text btn-primary" title="Export as Standalone HTML">
+        <iconify-icon icon="solar:download-square-bold"></iconify-icon>
+        <span>Export</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Toolbar / Stats Bar -->
+  <div class="workspace-toolbar">
+    <div class="toolbar-stats">
+      <span class="stat-item"><iconify-icon icon="solar:document-text-linear"></iconify-icon> Words: <strong id="statWords" class="stat-value">0</strong></span>
+      <span class="stat-item"><iconify-icon icon="solar:text-square-linear"></iconify-icon> Characters: <strong id="statChars" class="stat-value">0</strong></span>
+      <span class="stat-item"><iconify-icon icon="solar:clock-circle-linear"></iconify-icon> Read Time: <strong id="statReadTime" class="stat-value">0 min</strong></span>
+    </div>
+
+    <div class="toolbar-controls">
+      <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copy Raw Markdown">
+        <iconify-icon icon="solar:clipboard-text-linear"></iconify-icon>
+        <span>Copy MD</span>
+      </button>
+      <button id="btnDownloadMd" class="btn-icon-text btn-outline" title="Download .md File">
+        <iconify-icon icon="solar:file-download-linear"></iconify-icon>
+        <span>Download .md</span>
+      </button>
+      <button id="btnClear" class="btn-icon-text btn-outline" title="Clear Editor">
+        <iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>
+        <span>Clear</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Workspace (Editor + Live Preview) -->
+  <main id="workspace" class="workspace-container mode-split">
+    <!-- Left Editor Pane -->
+    <div class="pane pane-editor">
+      <textarea id="editor" class="editor-textarea" placeholder="Type or paste your Markdown here, or drag & drop a .md file..." spellcheck="false"></textarea>
+    </div>
+
+    <!-- Right Preview Pane -->
+    <div class="pane pane-preview">
+      <div id="preview" class="markdown-body"></div>
+    </div>
+  </main>
+
+  <!-- SEO Content & Comprehensive Guide (Below the fold) -->
+  <section class="seo-section">
+    <div class="seo-container">
+      <div class="section-header">
+        <h1 class="section-title">The Modern, Zero-Latency Markdown Viewer</h1>
+        <p class="section-subtitle">
+          Designed for developers, technical writers, and AI creators who require instant rendering, full GitHub Flavored Markdown compliance, and complete local privacy.
+        </p>
+      </div>
+
+      <!-- Feature Highlights -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
+          <h2 class="feature-title">100% Client-Side Privacy</h2>
+          <p class="feature-desc">All document parsing occurs locally inside your browser's V8 engine. No files, text, or tokens are ever transmitted to remote servers.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:bolt-circle-bold"></iconify-icon></div>
+          <h2 class="feature-title">Zero-Lag Real-Time Sync</h2>
+          <p class="feature-desc">Experience lightning-fast split scrolling and instant rendering with sub-millisecond typing response, even on large technical whitepapers.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:code-file-bold"></iconify-icon></div>
+          <h2 class="feature-title">GitHub Flavored (GFM)</h2>
+          <p class="feature-desc">Full support for markdown tables, task checklists, strikethroughs, footnotes, and syntax highlighting across 180+ languages.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:pallete-2-bold"></iconify-icon></div>
+          <h2 class="feature-title">Multiple Reading Themes</h2>
+          <p class="feature-desc">Easily switch between GitHub Light, GitHub Dark, Eye-Care Warm Sepia, and Midnight Dark for maximum reading comfort.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:export-bold"></iconify-icon></div>
+          <h2 class="feature-title">Multi-Format Export</h2>
+          <p class="feature-desc">Export your formatted notes to standalone, beautifully styled HTML or download native .md files with a single click.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><iconify-icon icon="solar:smartphone-2-bold"></iconify-icon></div>
+          <h2 class="feature-title">Offline & Mobile Ready</h2>
+          <p class="feature-desc">Fully optimized for desktop split-screen productivity and mobile reading. Works seamlessly even when offline.</p>
+        </div>
+      </div>
+
+      <!-- Markdown Syntax Cheat Sheet (Interactive) -->
+      <div class="section-header">
+        <h2 class="section-title">Complete Markdown Syntax Cheat Sheet</h2>
+        <p class="section-subtitle">Click on any code syntax snippet below to copy it directly to your clipboard.</p>
+      </div>
+
+      <div class="cheatsheet-box">
+        <nav class="cheatsheet-tabs" aria-label="Markdown Syntax Categories">
+          <button class="tab-btn active" data-tab="basic">Basic Formatting</button>
+          <button class="tab-btn" data-tab="headers">Headers & Lists</button>
+          <button class="tab-btn" data-tab="tables">Tables & Checklists</button>
+          <button class="tab-btn" data-tab="code">Code & Blockquotes</button>
+          <button class="tab-btn" data-tab="advanced">Links & Media</button>
+        </nav>
+
+        <!-- Tab 1: Basic -->
+        <div id="tab-basic" class="tab-content active">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Markdown Syntax (Click to Copy)</th>
+                <th>Rendered Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bold Text</strong></td>
+                <td><code class="syntax-code">**Bold text**</code></td>
+                <td><strong>Bold text</strong></td>
+              </tr>
+              <tr>
+                <td><em>Italic Text</em></td>
+                <td><code class="syntax-code">*Italicized text*</code></td>
+                <td><em>Italicized text</em></td>
+              </tr>
+              <tr>
+                <td><del>Strikethrough</del></td>
+                <td><code class="syntax-code">~~Crossed out~~</code></td>
+                <td><del>Crossed out</del></td>
+              </tr>
+              <tr>
+                <td>Inline Code</td>
+                <td><code class="syntax-code">`const result = true;`</code></td>
+                <td><code>const result = true;</code></td>
+              </tr>
+              <tr>
+                <td>Horizontal Rule</td>
+                <td><code class="syntax-code">---</code></td>
+                <td><hr style="margin: 0.5rem 0;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tab 2: Headers -->
+        <div id="tab-headers" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Markdown Syntax (Click to Copy)</th>
+                <th>Preview Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>H1 Heading</td>
+                <td><code class="syntax-code"># Heading Level 1</code></td>
+                <td><span style="font-size: 1.4rem; font-weight: 700;">Heading Level 1</span></td>
+              </tr>
+              <tr>
+                <td>H2 Heading</td>
+                <td><code class="syntax-code">## Heading Level 2</code></td>
+                <td><span style="font-size: 1.2rem; font-weight: 600;">Heading Level 2</span></td>
+              </tr>
+              <tr>
+                <td>H3 Heading</td>
+                <td><code class="syntax-code">### Heading Level 3</code></td>
+                <td><span style="font-size: 1.05rem; font-weight: 600;">Heading Level 3</span></td>
+              </tr>
+              <tr>
+                <td>Unordered List</td>
+                <td><code class="syntax-code">- Item A
+- Item B</code></td>
+                <td>• Item A<br>• Item B</td>
+              </tr>
+              <tr>
+                <td>Ordered List</td>
+                <td><code class="syntax-code">1. First step
+2. Second step</code></td>
+                <td>1. First step<br>2. Second step</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tab 3: Tables -->
+        <div id="tab-tables" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Markdown Syntax (Click to Copy)</th>
+                <th>Preview Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Markdown Table</td>
+                <td><code class="syntax-code">| Name | Role |
+| :--- | :--- |
+| Alice | Lead |</code></td>
+                <td>Simple two-column table</td>
+              </tr>
+              <tr>
+                <td>Task List (Todo)</td>
+                <td><code class="syntax-code">- [ ] Pending item</code></td>
+                <td>☐ Pending item</td>
+              </tr>
+              <tr>
+                <td>Task List (Done)</td>
+                <td><code class="syntax-code">- [x] Completed task</code></td>
+                <td>☑ Completed task</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tab 4: Code -->
+        <div id="tab-code" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Markdown Syntax (Click to Copy)</th>
+                <th>Preview Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fenced Code Block</td>
+                <td><code class="syntax-code">```javascript
+console.log('Hello');
+```</code></td>
+                <td>Highlighted code block with language header</td>
+              </tr>
+              <tr>
+                <td>Blockquote</td>
+                <td><code class="syntax-code">> Stay hungry, stay foolish.</code></td>
+                <td><blockquote style="margin:0; padding:0.2rem 0.6rem; border-left: 3px solid #0284c7;">Stay hungry, stay foolish.</blockquote></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tab 5: Links -->
+        <div id="tab-advanced" class="tab-content">
+          <table class="syntax-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Markdown Syntax (Click to Copy)</th>
+                <th>Preview Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hyperlink</td>
+                <td><code class="syntax-code">[Visit MDPreview](https://mdpreview.dev)</code></td>
+                <td><a href="https://mdpreview.dev" target="_blank">Visit MDPreview</a></td>
+              </tr>
+              <tr>
+                <td>Image Embed</td>
+                <td><code class="syntax-code">![Alt text](https://example.com/pic.png)</code></td>
+                <td>Embedded responsive image</td>
+              </tr>
+              <tr>
+                <td>Footnotes</td>
+                <td><code class="syntax-code">Here is a note[^1]
+
+[^1]: Reference detail</code></td>
+                <td>Footnote reference superscript</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FAQ Section (Schema.org compliant) -->
+      <div class="section-header">
+        <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
+        <p class="section-subtitle">Everything you need to know about using MDPreview for your documents and notes.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-question">
+            <span>What makes MDPreview different from other online markdown viewers?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon"></iconify-icon>
+          </button>
+          <div class="faq-answer">
+            MDPreview prioritizes extreme performance and privacy. Unlike cluttered converter websites that bombard users with video ads or upload text to third-party cloud servers, MDPreview performs 100% of its rendering in your local browser memory with zero latency, full GFM support, and dedicated reading themes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my private data or technical documentation stored anywhere?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon"></iconify-icon>
+          </button>
+          <div class="faq-answer">
+            No. MDPreview has no database and no tracking backend. The editor optionally caches your working draft inside your browser's own LocalStorage so you don't lose work when refreshing, but no document contents are ever transmitted across the network.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I open large files or drag and drop from my desktop?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon"></iconify-icon>
+          </button>
+          <div class="faq-answer">
+            Yes. You can drag and drop any .md, .markdown, or .txt file directly into the editor pane, or click the "Open" button in the navigation bar to pick a file from your hard drive.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How do I export my Markdown to clean HTML?</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon"></iconify-icon>
+          </button>
+          <div class="faq-answer">
+            Click the "Copy HTML" button to grab the raw formatted markup into your clipboard, or click "Export" to download a complete, standalone .html file that is self-contained with modern CSS typography ready for publishing or sharing.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="/" class="brand">
+            <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="28" height="28">
+            <span>MDPreview</span>
+          </a>
+          <p>Instant, Beautiful Markdown Viewer & Live Editor. Built for global developers, technical creators, and indie hackers.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="/">Live Editor</a></li>
+              <li><a href="#tab-basic">Syntax Guide</a></li>
+              <li><a href="#workspace">Sample Templates</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Languages</h4>
+            <ul>
+              <li><a href="/">English (US)</a></li>
+              <li><a href="/es/">Español</a></li>
+              <li><a href="/pt/">Português</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Legal & Info</h4>
+            <ul>
+              <li><a href="/about.html">About Us</a></li>
+              <li><a href="/privacy.html">Privacy Policy</a></li>
+              <li><a href="/terms.html">Terms of Service</a></li>
+              <li><a href="/contact.html">Contact & Feedback</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 MDPreview. Built with ❤️ for the global open-source community by 糖糖it.
+        </div>
+
+        <div class="lang-selector">
+          <span>Language:</span>
+          <a href="/" class="lang-link active">EN</a>
+          <a href="/es/" class="lang-link">ES</a>
+          <a href="/pt/" class="lang-link">PT</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
