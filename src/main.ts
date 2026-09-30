@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!editor || !preview) return;
 
-  // Configure Marked
   marked.setOptions({
     gfm: true,
     breaks: true
@@ -113,6 +112,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function insertFormatting(prefix: string, suffix: string = '', defaultText: string = '') {
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selected = editor.value.substring(start, end) || defaultText;
+    const replacement = prefix + selected + suffix;
+    editor.value = editor.value.substring(0, start) + replacement + editor.value.substring(end);
+    editor.focus();
+    editor.setSelectionRange(start + prefix.length, start + prefix.length + selected.length);
+    renderMarkdown();
+  }
+
+  const formatActions: Record<string, () => void> = {
+    bold: () => insertFormatting('**', '**', 'bold text'),
+    italic: () => insertFormatting('*', '*', 'italic text'),
+    h2: () => insertFormatting('\n## ', '\n', 'Heading 2'),
+    h3: () => insertFormatting('\n### ', '\n', 'Heading 3'),
+    code: () => insertFormatting('`', '`', 'code'),
+    codeblock: () => insertFormatting('\n```javascript\n', '\n```\n', '// code here'),
+    quote: () => insertFormatting('\n> ', '\n', 'Quote here'),
+    table: () => insertFormatting('\n| Header 1 | Header 2 |\n| :--- | :--- |\n| Item 1 | Item 2 |\n'),
+    task: () => insertFormatting('\n- [ ] ', '', 'New task'),
+    link: () => insertFormatting('[', '](https://example.com)', 'link text')
+  };
+
+  document.querySelectorAll('.btn-format').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.getAttribute('data-action');
+      if (action && formatActions[action]) {
+        formatActions[action]();
+      }
+    });
+  });
+
   let isScrollingEditor = false;
   let isScrollingPreview = false;
 
@@ -148,11 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function setViewMode(mode: 'split' | 'preview' | 'editor') {
     workspace.classList.remove('mode-split', 'mode-preview', 'mode-editor');
     workspace.classList.add('mode-' + mode);
-
     btnModeSplit?.classList.toggle('active', mode === 'split');
     btnModePreview?.classList.toggle('active', mode === 'preview');
     btnModeEditor?.classList.toggle('active', mode === 'editor');
-
     localStorage.setItem('mdpreview_mode', mode);
   }
 
@@ -275,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const tabId = btn.getAttribute('data-tab');
       tabBtns.forEach(b => b.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
-
       btn.classList.add('active');
       const target = document.getElementById('tab-' + tabId);
       if (target) target.classList.add('active');

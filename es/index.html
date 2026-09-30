@@ -69,7 +69,26 @@
       <span>MDPreview</span>
       <span class="brand-badge">ES</span>
     </a>
-
+    <nav class="nav-ecosystem" aria-label="Tool Ecosystem">
+      <a href="/" class="nav-link active">
+        <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+        <span>Viewer</span>
+      </a>
+      <a href="#tab-basic" class="nav-link">
+        <iconify-icon icon="solar:book-bookmark-bold"></iconify-icon>
+        <span>Cheatsheet</span>
+      </a>
+      <a href="/contact.html" class="nav-link">
+        <iconify-icon icon="solar:file-corrupted-linear"></iconify-icon>
+        <span>PDF to MD</span>
+        <span class="tag-soon">Soon</span>
+      </a>
+      <a href="/contact.html" class="nav-link">
+        <iconify-icon icon="solar:gallery-wide-linear"></iconify-icon>
+        <span>MD to Card</span>
+        <span class="tag-soon">Soon</span>
+      </a>
+    </nav>
     <div class="header-actions">
       <select id="sampleSelect" class="select-control" aria-label="Cargar Ejemplo">
         <option value="readme">Ejemplo: Guía README</option>
@@ -144,6 +163,22 @@
   <!-- Workspace Container -->
   <main id="workspace" class="workspace-container mode-split">
     <div class="pane pane-editor">
+            <!-- Formatting Toolbar -->
+      <div class="editor-header-bar">
+        <div class="format-btn-group">
+          <button class="btn-format" data-action="bold" title="Bold (**text**)"><iconify-icon icon="solar:text-bold-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="italic" title="Italic (*text*)"><iconify-icon icon="solar:text-italic-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="h2" title="Heading 2 (##)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon> H2</button>
+          <button class="btn-format" data-action="h3" title="Heading 3 (###)">H3</button>
+          <button class="btn-format" data-action="code" title="Inline Code"><iconify-icon icon="solar:code-2-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="codeblock" title="Code Block"><iconify-icon icon="solar:code-square-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="quote" title="Blockquote"><iconify-icon icon="solar:quote-down-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="table" title="Table"><iconify-icon icon="solar:widget-2-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="task" title="Task List"><iconify-icon icon="solar:check-square-bold"></iconify-icon></button>
+          <button class="btn-format" data-action="link" title="Hyperlink"><iconify-icon icon="solar:link-bold"></iconify-icon></button>
+        </div>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Markdown Source</span>
+      </div>
       <textarea id="editor" class="editor-textarea" placeholder="Escribe o pega tu Markdown aquí, o arrastra un archivo .md..." spellcheck="false"></textarea>
     </div>
     <div class="pane pane-preview">
