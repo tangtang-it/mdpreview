@@ -1,7 +1,10 @@
 # MDPreview (Markdown 预览工具)
 
-> Instant, Beautiful Markdown Viewer & Live Editor in Your Browser.
+> Instant, Beautiful Markdown Viewer & Live Editor in Your Browser.  
 > 专为全球开发者、技术作者及独立创作者打造的轻量、零延迟、高隐私纯前端 Markdown 实时预览工具。
+
+🌐 **在线体验 (Live Demo)**: [https://mdpreview.dev/](https://mdpreview.dev/)  
+📁 **开源仓库**: [https://github.com/tangtang-it/mdpreview](https://github.com/tangtang-it/mdpreview)
 
 ---
 
@@ -21,27 +24,32 @@
 ```text
 MdPreview/
 ├── doc/
-│   └── seo-research-and-project-roadmap.md   # 核心调研纪要、Google Ads出价与落地全景
+│   ├── seo-research-and-project-roadmap.md          # 核心调研纪要、Google Ads出价与落地全景
+│   ├── competitor-teardown-and-ux-design-strategy.md # 竞品深度拆解与破局设计准则
+│   └── backlink-kit.md                              # 外部推广与外链标准化物料包
 ├── es/
-│   └── index.html                            # 西班牙语物理独立子目录
+│   └── index.html                                   # 西班牙语物理独立子目录
 ├── pt/
-│   └── index.html                            # 葡萄牙语物理独立子目录
+│   └── index.html                                   # 葡萄牙语物理独立子目录
 ├── public/
-│   ├── favicon.svg                           # 高清矢量 Logo
-│   └── robots.txt                            # 爬虫索引与 Sitemap 指引
+│   ├── favicon.svg                                  # 高清矢量 Logo
+│   ├── robots.txt                                   # 爬虫索引与 Sitemap 指引
+│   └── 7e3b9f84a1d64c0e8f2a5b1c9d3e7f41.txt        # IndexNow 极速索引验证密钥
 ├── scripts/
-│   └── generate-sitemap.mjs                  # 带 Hreflang 矩阵的自动化 Sitemap 脚本
+│   ├── generate-sitemap.mjs                         # 带 Hreflang 矩阵的自动化 Sitemap 脚本
+│   └── submit_indexnow.py                           # IndexNow 搜索引擎推送脚本
 ├── src/
-│   ├── main.ts                               # 编辑器核心交互、Marked 配置与状态管理
-│   └── style.css                             # 现代响应式 CSS 与主题调色盘
-├── about.html                                # 关于我们合规页
-├── privacy.html                              # 隐私协议（含 AdSense Cookie 声明）
-├── terms.html                                # 服务条款
-├── contact.html                              # 联系与功能建议反馈页
-├── index.html                                # 主站英文版（SEO 与核心工具入口）
-├── package.json                              # 项目依赖配置
-├── tsconfig.json                             # TypeScript 编译选项
-└── vite.config.ts                            # 多入口打包配置
+│   ├── main.ts                                      # 编辑器核心交互、Marked 配置与状态管理
+│   ├── samples.ts                                   # 预置 README、数学公式、LLM 示例
+│   └── style.css                                    # 现代响应式 CSS 与主题调色盘
+├── about.html                                       # 关于我们合规页
+├── privacy.html                                     # 隐私协议（含 AdSense Cookie 声明）
+├── terms.html                                       # 服务条款
+├── contact.html                                     # 联系与功能建议反馈页
+├── index.html                                       # 主站英文版（SEO 与核心工具入口）
+├── package.json                                     # 项目依赖配置
+├── tsconfig.json                                    # TypeScript 编译选项
+└── vite.config.ts                                   # 多入口打包配置
 ```
 
 ---
@@ -66,4 +74,20 @@ pnpm run build
 ---
 
 ## 📄 文档索引
-查看完整 SEO 调研、长尾词矩阵与 AdSense 盈利模型：[doc/seo-research-and-project-roadmap.md](doc/seo-research-and-project-roadmap.md)
+- 完整 SEO 调研与盈利模型：[doc/seo-research-and-project-roadmap.md](doc/seo-research-and-project-roadmap.md)
+- 竞品对比与设计破局规范：[doc/competitor-teardown-and-ux-design-strategy.md](doc/competitor-teardown-and-ux-design-strategy.md)
+- 外链提交与推广物料清单：[doc/backlink-kit.md](doc/backlink-kit.md)
+
+---
+
+## 👨‍💻 关于我 (About the Author)
+
+- **作者**：[糖糖it](https://tangtangit.com)
+- **个人技术博客**：[tangtangit.com](https://tangtangit.com)
+- **GitHub 主页**：[@tangtang-it](https://github.com/tangtang-it)
+- **代表作品**：
+  - 🚀 **[MDPreview (Markdown 在线预览与实时编辑器)](https://mdpreview.dev/)**
+  - 🎙️ **[Free Online TTS Studio (AI 文本转语音)](https://tts.tangtangit.com)**
+  - 🌅 **[Morning Quote Card Maker (早安唯美语录卡片)](https://morning-quote.com)**
+
+欢迎 Star ⭐ 收藏与 Issue 交流！
