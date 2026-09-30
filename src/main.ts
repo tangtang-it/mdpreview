@@ -71,10 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderer.heading = function({ tokens, depth }: { tokens: any[]; depth: number }) {
     const text = (this as any).parser.parseInline(tokens);
-    if (depth === 1) {
-      return `<div class="md-preview-h1" role="heading" aria-level="1">${text}</div>\n`;
-    }
-    return `<h${depth}>${text}</h${depth}>\n`;
+    return `<div class="md-preview-heading md-preview-h${depth}" role="heading" aria-level="${depth}">${text}</div>\n`;
   };
 
   marked.use({ renderer });
@@ -259,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnCopyHtml?.addEventListener('click', () => {
-    navigator.clipboard.writeText(preview.innerHTML.replace(/<div class="md-preview-h1" role="heading" aria-level="1">(.*?)<\/div>/g, '<h1>$1</h1>')).then(() => {
+    navigator.clipboard.writeText(preview.innerHTML.replace(/<div class="md-preview-heading md-preview-h(\d)" role="heading" aria-level="\d">(.*?)<\/div>/g, '<h$1>$2</h$1>')).then(() => {
       showToast('HTML copied to clipboard!');
     });
   });
@@ -282,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnExportHtml?.addEventListener('click', () => {
-    const htmlContent = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>Exported Markdown - MDPreview</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 860px; margin: 3rem auto; padding: 0 1.5rem; color: #1e293b; }\n    h1, h2 { border-bottom: 1px solid #e2e8f0; padding-bottom: 0.3em; }\n    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-family: monospace; }\n    pre { background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; overflow-x: auto; }\n    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }\n    th, td { border: 1px solid #cbd5e1; padding: 0.5rem 0.75rem; text-align: left; }\n    th { background: #f8fafc; }\n    blockquote { border-left: 4px solid #0284c7; margin: 1rem 0; padding: 0.5rem 1rem; background: #f8fafc; color: #64748b; }\n  </style>\n</head>\n<body>\n' + preview.innerHTML.replace(/<div class="md-preview-h1" role="heading" aria-level="1">(.*?)<\/div>/g, '<h1>$1</h1>') + '\n</body>\n</html>';
+    const htmlContent = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>Exported Markdown - MDPreview</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 860px; margin: 3rem auto; padding: 0 1.5rem; color: #1e293b; }\n    h1, h2 { border-bottom: 1px solid #e2e8f0; padding-bottom: 0.3em; }\n    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-family: monospace; }\n    pre { background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; overflow-x: auto; }\n    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }\n    th, td { border: 1px solid #cbd5e1; padding: 0.5rem 0.75rem; text-align: left; }\n    th { background: #f8fafc; }\n    blockquote { border-left: 4px solid #0284c7; margin: 1rem 0; padding: 0.5rem 1rem; background: #f8fafc; color: #64748b; }\n  </style>\n</head>\n<body>\n' + preview.innerHTML.replace(/<div class="md-preview-heading md-preview-h(\d)" role="heading" aria-level="\d">(.*?)<\/div>/g, '<h$1>$2</h$1>') + '\n</body>\n</html>';
     const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
