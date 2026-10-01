@@ -172,23 +172,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  let isScrollingEditor = false;
-  let isScrollingPreview = false;
+  // =========================================================================
+  // Robust Two-Way Sync Scrolling on previewScrollContainer
+  // =========================================================================
+  let activeScrollSource: 'editor' | 'preview' | null = null;
+  let isSyncing = false;
+  let syncResetTimer: any = null;
 
+  function isSyncScrollActive(): boolean {
+    return toggleSyncScroll ? toggleSyncScroll.checked : true;
+  }
+
+  // Active hover/pointer source tracking
+  editor.addEventListener('pointerenter', () => { activeScrollSource = 'editor'; });
+  editor.addEventListener('mouseenter', () => { activeScrollSource = 'editor'; });
+  editor.addEventListener('wheel', () => { activeScrollSource = 'editor'; }, { passive: true });
+  editor.addEventListener('touchstart', () => { activeScrollSource = 'editor'; }, { passive: true });
+
+  previewScrollContainer.addEventListener('pointerenter', () => { activeScrollSource = 'preview'; });
+  previewScrollContainer.addEventListener('mouseenter', () => { activeScrollSource = 'preview'; });
+  previewScrollContainer.addEventListener('wheel', () => { activeScrollSource = 'preview'; }, { passive: true });
+  previewScrollContainer.addEventListener('touchstart', () => { activeScrollSource = 'preview'; }, { passive: true });
+
+  // Sync scroll from Editor -> Preview
   editor.addEventListener('scroll', () => {
-    if (isScrollingPreview) return;
-    isScrollingEditor = true;
-    const percentage = editor.scrollTop / (editor.scrollHeight - editor.clientHeight || 1);
-    preview.scrollTop = percentage * (preview.scrollHeight - preview.clientHeight);
-    setTimeout(() => { isScrollingEditor = false; }, 50);
+    if (!isSyncScrollActive()) return;
+    if (isSyncing) return;
+    if (activeScrollSource === 'preview') return;
+
+    isSyncing = true;
+    const editorMax = editor.scrollHeight - editor.clientHeight;
+    const previewMax = previewScrollContainer.scrollHeight - previewScrollContainer.clientHeight;
+
+    if (editorMax > 0 && previewMax > 0) {
+      const ratio = Math.max(0, Math.min(1, editor.scrollTop / editorMax));
+      previewScrollContainer.scrollTop = ratio * previewMax;
+    }
+
+    clearTimeout(syncResetTimer);
+    syncResetTimer = setTimeout(() => {
+      isSyncing = false;
+    }, 40);
   });
 
-  preview.addEventListener('scroll', () => {
-    if (isScrollingEditor) return;
-    isScrollingPreview = true;
-    const percentage = preview.scrollTop / (preview.scrollHeight - preview.clientHeight || 1);
-    editor.scrollTop = percentage * (editor.scrollHeight - editor.clientHeight);
-    setTimeout(() => { isScrollingPreview = false; }, 50);
+  // Sync scroll from Preview -> Editor
+  previewScrollContainer.addEventListener('scroll', () => {
+    if (!isSyncScrollActive()) return;
+    if (isSyncing) return;
+    if (activeScrollSource === 'editor') return;
+
+    isSyncing = true;
+    const editorMax = editor.scrollHeight - editor.clientHeight;
+    const previewMax = previewScrollContainer.scrollHeight - previewScrollContainer.clientHeight;
+
+    if (editorMax > 0 && previewMax > 0) {
+      const ratio = Math.max(0, Math.min(1, previewScrollContainer.scrollTop / previewMax));
+      editor.scrollTop = ratio * editorMax;
+    }
+
+    clearTimeout(syncResetTimer);
+    syncResetTimer = setTimeout(() => {
+      isSyncing = false;
+    }, 40);
   });
 
   editor.addEventListener('input', renderMarkdown);
