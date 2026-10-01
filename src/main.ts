@@ -68,7 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
 
   const renderer = new marked.Renderer();
-  renderer.code = function({ text, lang }: { text: string; lang?: string }) {
+
+  renderer.code = function(token: any) {
+    const text = token.text;
+    const lang = token.lang;
+    const lineAttr = token.line ? ' data-line="' + token.line + '"' : '';
     const validLang = lang && hljs.getLanguage(lang) ? lang : 'plaintext';
     let highlighted = '';
     try {
@@ -76,18 +80,54 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch {
       highlighted = hljs.highlightAuto(text).value;
     }
-    return '<div class="code-wrapper">' +
+    return '<div class="code-wrapper"' + lineAttr + '>' +
       '<div class="code-header">' +
         '<span>' + validLang.toUpperCase() + '</span>' +
         '<button class="btn-copy-code" type="button" data-code="' + encodeURIComponent(text) + '">Copy</button>' +
       '</div>' +
       '<pre><code class="hljs language-' + validLang + '">' + highlighted + '</code></pre>' +
-    '</div>';
+    '</div>\n';
   };
 
-  renderer.heading = function({ tokens, depth }: { tokens: any[]; depth: number }) {
-    const text = (this as any).parser.parseInline(tokens);
-    return `<div class="md-preview-heading md-preview-h${depth}" role="heading" aria-level="${depth}">${text}</div>\n`;
+  renderer.heading = function(token: any) {
+    const text = (this as any).parser.parseInline(token.tokens);
+    const lineAttr = token.line ? ' data-line="' + token.line + '"' : '';
+    return '<div class="md-preview-heading md-preview-h' + token.depth + '"' + lineAttr + ' role="heading" aria-level="' + token.depth + '">' + text + '</div>\n';
+  };
+
+  renderer.paragraph = function(token: any) {
+    const text = (this as any).parser.parseInline(token.tokens);
+    const lineAttr = token.line ? ' data-line="' + token.line + '"' : '';
+    return '<p' + lineAttr + '>' + text + '</p>\n';
+  };
+
+  renderer.blockquote = function(token: any) {
+    const body = (this as any).parser.parse(token.tokens);
+    const lineAttr = token.line ? ' data-line="' + token.line + '"' : '';
+    return '<blockquote' + lineAttr + '>\n' + body + '</blockquote>\n';
+  };
+
+  renderer.table = function(token: any) {
+    let header = '';
+    let body = '';
+    for (let j = 0; j < token.header.length; j++) {
+      header += '<th>' + (this as any).parser.parseInline(token.header[j].tokens) + '</th>';
+    }
+    for (let i = 0; i < token.rows.length; i++) {
+      const row = token.rows[i];
+      let rowHtml = '';
+      for (let j = 0; j < row.length; j++) {
+        rowHtml += '<td>' + (this as any).parser.parseInline(row[j].tokens) + '</td>';
+      }
+      body += '<tr>' + rowHtml + '</tr>\n';
+    }
+    const lineAttr = token.line ? ' data-line="' + token.line + '"' : '';
+    return '<table' + lineAttr + '>\n<thead>\n<tr>' + header + '</tr>\n</thead>\n<tbody>\n' + body + '</tbody>\n</table>\n';
+  };
+
+  renderer.hr = function(token: any) {
+    const lineAttr = token.line ? ' data-line="' + token.line + '"' : '';
+    return '<hr' + lineAttr + '>\n';
   };
 
   marked.use({ renderer });
@@ -116,10 +156,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     clearTimeout(renderTimeout);
     renderTimeout = setTimeout(() => {
-      preview.innerHTML = marked.parse(raw) as string;
+      // 1. Tag line numbers onto AST block tokens
+      const tokens = marked.lexer(raw);
+      let lineNum = 1;
+      for (let i = 0; i < tokens.length; i++) {
+        const t = tokens[i];
+        (t as any).line = lineNum;
+        const lines = (t.raw.match(/\n/g) || []).length;
+        lineNum += lines;
+      }
+
+      // 2. Parse and render
+      preview.innerHTML = marked.parser(tokens);
       attachCodeCopyButtons();
       updateStats(raw);
-    }, 50);
+
+      // Invalidate sync mapping so next scroll uses accurate element positions
+      isMappingDirty = true;
+    }, 35);
   }
 
   function attachCodeCopyButtons() {
@@ -173,68 +227,166 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // Robust Two-Way Sync Scrolling on previewScrollContainer
+  // Silky-Smooth 60/120fps Sync Scroll Engine (Inspired by markdownlivepreview.dev)
   // =========================================================================
-  let activeScrollSource: 'editor' | 'preview' | null = null;
-  let isSyncing = false;
-  let syncResetTimer: any = null;
+  interface SyncMapping {
+    editor: number[];
+    preview: number[];
+  }
+
+  let syncMapping: SyncMapping | null = null;
+  let isMappingDirty = true;
+  let activeSource: 'editor' | 'preview' = 'editor';
+  const programScroll: { editor: number | null; preview: number | null } = { editor: null, preview: null };
+  let rafId = 0;
+
+  function measureEditorLineOffsets(editorEl: HTMLTextAreaElement): number[] {
+    const style = getComputedStyle(editorEl);
+    const mirror = document.createElement('div');
+    const s = mirror.style;
+    s.position = 'absolute';
+    s.visibility = 'hidden';
+    s.top = '0';
+    s.left = '-9999px';
+    s.boxSizing = 'border-box';
+    s.width = editorEl.clientWidth + 'px';
+    s.whiteSpace = 'pre-wrap';
+    s.overflowWrap = 'break-word';
+    s.wordBreak = style.wordBreak;
+    s.font = style.font;
+    s.letterSpacing = style.letterSpacing;
+    s.lineHeight = style.lineHeight;
+    s.tabSize = style.tabSize;
+    s.padding = style.padding;
+    s.border = '0';
+
+    const frag = document.createDocumentFragment();
+    const lines = editorEl.value.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const lineDiv = document.createElement('div');
+      lineDiv.textContent = lines[i] || '\u200b';
+      frag.appendChild(lineDiv);
+    }
+    mirror.appendChild(frag);
+    document.body.appendChild(mirror);
+    const offsets = Array.from(mirror.children, (child) => (child as HTMLElement).offsetTop);
+    mirror.remove();
+    return offsets;
+  }
+
+  function buildSyncMapping(): SyncMapping | null {
+    const maxEditor = editor.scrollHeight - editor.clientHeight;
+    const maxPreview = previewScrollContainer.scrollHeight - previewScrollContainer.clientHeight;
+    if (maxEditor <= 0 || maxPreview <= 0) return null;
+
+    const editorOffsets = measureEditorLineOffsets(editor);
+    const containerRectTop = previewScrollContainer.getBoundingClientRect().top - previewScrollContainer.scrollTop;
+    const map: SyncMapping = { editor: [0], preview: [0] };
+
+    previewScrollContainer.querySelectorAll('[data-line]').forEach((el) => {
+      const lineIdx = Number((el as HTMLElement).dataset.line) - 1;
+      if (lineIdx < 0 || lineIdx >= editorOffsets.length) return;
+      const editorY = editorOffsets[lineIdx];
+      const previewY = el.getBoundingClientRect().top - containerRectTop;
+
+      if (
+        editorY <= map.editor[map.editor.length - 1] ||
+        previewY <= map.preview[map.preview.length - 1] ||
+        editorY >= maxEditor ||
+        previewY >= maxPreview
+      ) return;
+
+      map.editor.push(editorY);
+      map.preview.push(previewY);
+    });
+
+    map.editor.push(maxEditor);
+    map.preview.push(maxPreview);
+    return map;
+  }
+
+  function interpolateScroll(currScroll: number, srcOffsets: number[], dstOffsets: number[]): number {
+    let low = 0;
+    let high = srcOffsets.length - 1;
+    if (currScroll <= srcOffsets[low]) return dstOffsets[low];
+    if (currScroll >= srcOffsets[high]) return dstOffsets[high];
+
+    while (high - low > 1) {
+      const mid = (low + high) >> 1;
+      srcOffsets[mid] <= currScroll ? (low = mid) : (high = mid);
+    }
+
+    const ratio = (currScroll - srcOffsets[low]) / (srcOffsets[high] - srcOffsets[low]);
+    return dstOffsets[low] + ratio * (dstOffsets[high] - dstOffsets[low]);
+  }
 
   function isSyncScrollActive(): boolean {
     return toggleSyncScroll ? toggleSyncScroll.checked : true;
   }
 
-  // Active hover/pointer source tracking
-  editor.addEventListener('pointerenter', () => { activeScrollSource = 'editor'; });
-  editor.addEventListener('mouseenter', () => { activeScrollSource = 'editor'; });
-  editor.addEventListener('wheel', () => { activeScrollSource = 'editor'; }, { passive: true });
-  editor.addEventListener('touchstart', () => { activeScrollSource = 'editor'; }, { passive: true });
+  function runSync(src: 'editor' | 'preview') {
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      if (!isSyncScrollActive()) return;
+      const dst = src === 'editor' ? 'preview' : 'editor';
+      const srcEl = src === 'editor' ? editor : previewScrollContainer;
+      const dstEl = src === 'editor' ? previewScrollContainer : editor;
 
-  previewScrollContainer.addEventListener('pointerenter', () => { activeScrollSource = 'preview'; });
-  previewScrollContainer.addEventListener('mouseenter', () => { activeScrollSource = 'preview'; });
-  previewScrollContainer.addEventListener('wheel', () => { activeScrollSource = 'preview'; }, { passive: true });
-  previewScrollContainer.addEventListener('touchstart', () => { activeScrollSource = 'preview'; }, { passive: true });
+      if (!srcEl.clientHeight || !dstEl.clientHeight) return;
 
-  // Sync scroll from Editor -> Preview
-  editor.addEventListener('scroll', () => {
+      if (isMappingDirty) {
+        syncMapping = buildSyncMapping();
+        isMappingDirty = false;
+      }
+
+      if (!syncMapping) {
+        const srcMax = srcEl.scrollHeight - srcEl.clientHeight;
+        const dstMax = dstEl.scrollHeight - dstEl.clientHeight;
+        if (srcMax > 0 && dstMax > 0) {
+          const ratio = srcEl.scrollTop / srcMax;
+          const target = Math.round(ratio * dstMax);
+          if (Math.abs(dstEl.scrollTop - target) >= 1) {
+            dstEl.scrollTop = target;
+            programScroll[dst] = dstEl.scrollTop;
+          }
+        }
+        return;
+      }
+
+      const targetScroll = Math.round(
+        interpolateScroll(srcEl.scrollTop, syncMapping[src], syncMapping[dst])
+      );
+
+      if (Math.abs(dstEl.scrollTop - targetScroll) >= 1) {
+        dstEl.scrollTop = targetScroll;
+        programScroll[dst] = dstEl.scrollTop;
+      }
+    });
+  }
+
+  const handleScroll = (src: 'editor' | 'preview') => () => {
     if (!isSyncScrollActive()) return;
-    if (isSyncing) return;
-    if (activeScrollSource === 'preview') return;
-
-    isSyncing = true;
-    const editorMax = editor.scrollHeight - editor.clientHeight;
-    const previewMax = previewScrollContainer.scrollHeight - previewScrollContainer.clientHeight;
-
-    if (editorMax > 0 && previewMax > 0) {
-      const ratio = Math.max(0, Math.min(1, editor.scrollTop / editorMax));
-      previewScrollContainer.scrollTop = ratio * previewMax;
+    const expected = programScroll[src];
+    programScroll[src] = null;
+    const currentScroll = (src === 'editor' ? editor : previewScrollContainer).scrollTop;
+    if (expected !== null && Math.abs(currentScroll - expected) < 2) {
+      return;
     }
+    activeSource = src;
+    runSync(src);
+  };
 
-    clearTimeout(syncResetTimer);
-    syncResetTimer = setTimeout(() => {
-      isSyncing = false;
-    }, 40);
-  });
+  editor.addEventListener('scroll', handleScroll('editor'), { passive: true });
+  previewScrollContainer.addEventListener('scroll', handleScroll('preview'), { passive: true });
 
-  // Sync scroll from Preview -> Editor
-  previewScrollContainer.addEventListener('scroll', () => {
-    if (!isSyncScrollActive()) return;
-    if (isSyncing) return;
-    if (activeScrollSource === 'editor') return;
-
-    isSyncing = true;
-    const editorMax = editor.scrollHeight - editor.clientHeight;
-    const previewMax = previewScrollContainer.scrollHeight - previewScrollContainer.clientHeight;
-
-    if (editorMax > 0 && previewMax > 0) {
-      const ratio = Math.max(0, Math.min(1, previewScrollContainer.scrollTop / previewMax));
-      editor.scrollTop = ratio * editorMax;
+  const resizeObserver = new ResizeObserver(() => {
+    isMappingDirty = true;
+    if (isSyncScrollActive()) {
+      runSync(activeSource);
     }
-
-    clearTimeout(syncResetTimer);
-    syncResetTimer = setTimeout(() => {
-      isSyncing = false;
-    }, 40);
   });
+  resizeObserver.observe(editor);
+  resizeObserver.observe(previewScrollContainer);
 
   editor.addEventListener('input', renderMarkdown);
 
