@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="github-light">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-45DDC4ZEJW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-45DDC4ZEJW');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown to Card Maker - Turn Markdown into Social Cards | MDPreview</title>
+  <meta name="author" content="糖糖it">
+  <meta name="application-name" content="MDPreview">
+  <meta name="apple-mobile-web-app-title" content="MDPreview">
+  <meta name="description" content="Generate beautiful social media cards, quote banners, and knowledge graphics from Markdown for Twitter/X, Xiaohongshu, and LinkedIn. Free, instant, export to high-res PNG.">
+  <link rel="canonical" href="https://mdpreview.dev/md-to-card.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MDPreview">
+  <meta property="og:url" content="https://mdpreview.dev/md-to-card.html">
+  <meta property="og:title" content="Markdown to Card Maker - Create Social Cards Online | MDPreview">
+  <meta property="og:description" content="Turn Markdown notes, quotes, and code snippets into stunning shareable graphics in seconds.">
+  <meta property="og:image" content="https://mdpreview.dev/mdpreview.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Markdown to Card Maker | MDPreview">
+  <meta name="twitter:description" content="Turn Markdown into beautiful social cards and knowledge banners.">
+  <meta name="twitter:image" content="https://mdpreview.dev/mdpreview.png">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "MDPreview Markdown to Card Maker",
+        "url": "https://mdpreview.dev/md-to-card.html",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Convert Markdown text into styled social media cards and high-resolution PNG images."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What image formats can I export?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can export crystal-clear PNG images with 2x Retina resolution, or copy the image directly to your clipboard for instant pasting on Twitter, WeChat, Xiaohongshu, or Slack."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I customize the themes and aspect ratio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! MDPreview provides 6 designer themes (Minimal, Midnight, Sunset, Emerald, Sepia, Aurora) and multiple aspect ratios including Auto, 1:1 Square, 3:4 Portrait, and 16:9 Landscape."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my text private?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely. The card rendering and image generation occur 100% locally in your browser memory using HTML5 canvas and SVG rendering. Zero server transmission."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <a href="/" class="brand">
+      <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="32" height="32">
+      <span>MDPreview</span>
+      <span class="brand-badge">PRO</span>
+    </a>
+    <nav class="nav-ecosystem" aria-label="Tool Ecosystem">
+      <a href="/" class="nav-link">
+        <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+        <span>Viewer</span>
+      </a>
+      <a href="/#tab-basic" class="nav-link">
+        <iconify-icon icon="solar:book-bookmark-bold"></iconify-icon>
+        <span>Cheatsheet</span>
+      </a>
+      <a href="/pdf-to-md.html" class="nav-link">
+        <iconify-icon icon="solar:file-corrupted-linear"></iconify-icon>
+        <span>PDF to MD</span>
+      </a>
+      <a href="/md-to-card.html" class="nav-link active">
+        <iconify-icon icon="solar:gallery-wide-linear"></iconify-icon>
+        <span>MD to Card</span>
+      </a>
+    </nav>
+    <div class="header-actions">
+      <select id="themeSelect" class="select-control" aria-label="Select Theme">
+        <option value="github-light">Theme: GitHub Light</option>
+        <option value="github-dark">Theme: GitHub Dark</option>
+        <option value="sepia">Theme: Warm Sepia</option>
+        <option value="midnight">Theme: Midnight Dark</option>
+      </select>
+      <a href="/" class="btn btn-outline" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+        <span>Live Editor</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="page-container tool-page">
+    <!-- Hero Header -->
+    <div class="tool-hero">
+      <span class="tool-badge">
+        <iconify-icon icon="solar:star-circle-bold"></iconify-icon>
+        Viral Social & Knowledge Cards
+      </span>
+      <h1 class="tool-title">Turn Markdown into Stunning Shareable Cards</h1>
+      <p class="tool-desc">
+        Transform markdown notes, quotes, code snippets, and changelogs into beautiful visual cards for Twitter/X, Xiaohongshu, LinkedIn, and blogs. 
+        Free, fast, and exported in 2x Retina clarity.
+      </p>
+    </div>
+
+    <!-- Card Workspace: Two Columns -->
+    <div class="card-workspace">
+      <!-- Left Controls & Editor -->
+      <div class="card-control-panel">
+        <!-- Preset Content Switcher -->
+        <div class="control-box">
+          <div class="control-box-header">
+            <h4><iconify-icon icon="solar:pen-new-square-linear"></iconify-icon> Content Source</h4>
+            <button id="btnLoadEditorText" type="button" class="btn btn-text-sm" title="Pull markdown from your MDPreview editor">
+              <iconify-icon icon="solar:import-linear"></iconify-icon>
+              From Editor
+            </button>
+          </div>
+          <div class="sample-chips">
+            <button id="btnSampleTech" type="button" class="chip-btn">💡 Tech Note</button>
+            <button id="btnSampleQuote" type="button" class="chip-btn">🌅 Daily Quote</button>
+            <button id="btnSampleChangelog" type="button" class="chip-btn">🚀 Changelog</button>
+          </div>
+          <textarea id="cardEditor" class="card-input-textarea" placeholder="Type or paste Markdown content here..." spellcheck="false"></textarea>
+        </div>
+
+        <!-- Design & Theme Options -->
+        <div class="control-box">
+          <div class="control-box-header">
+            <h4><iconify-icon icon="solar:palette-linear"></iconify-icon> Style & Aesthetics</h4>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="selectTheme">Card Theme</label>
+              <select id="selectTheme" class="select-control">
+                <option value="minimal">Notion Minimal (White)</option>
+                <option value="midnight">Midnight Cyber (Dark)</option>
+                <option value="sunset">Sunset Peach (Gradient)</option>
+                <option value="emerald">Emerald Sage (Green)</option>
+                <option value="sepia">Editorial Sepia (Warm)</option>
+                <option value="aurora">Aurora Violet (Purple)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="selectRatio">Aspect Ratio</label>
+              <select id="selectRatio" class="select-control">
+                <option value="auto">Auto / Flexible (640px)</option>
+                <option value="square">Square 1:1 (Social)</option>
+                <option value="portrait">Portrait 3:4 (Xiaohongshu)</option>
+                <option value="landscape">Landscape 16:9 (Twitter)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="selectFont">Typography</label>
+              <select id="selectFont" class="select-control">
+                <option value="sans">Modern Sans (Inter)</option>
+                <option value="serif">Editorial Serif (Georgia)</option>
+                <option value="mono">Geek Monospace (Code)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="selectPadding">Card Padding</label>
+              <select id="selectPadding" class="select-control">
+                <option value="compact">Compact (24px)</option>
+                <option value="normal" selected>Balanced (36px)</option>
+                <option value="spacious">Spacious (48px)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Author & Metadata Options -->
+        <div class="control-box">
+          <div class="control-box-header">
+            <h4><iconify-icon icon="solar:user-circle-linear"></iconify-icon> Author & Watermark</h4>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inputAuthorName">Author Name</label>
+              <input type="text" id="inputAuthorName" class="input-control" value="糖糖it" placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <label for="inputAuthorHandle">Handle / Bio</label>
+              <input type="text" id="inputAuthorHandle" class="input-control" value="@tangtang-it" placeholder="@yourhandle">
+            </div>
+          </div>
+
+          <div class="form-row checkboxes-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="toggleDate" checked>
+              <span>Show Today's Date</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="toggleWatermark" checked>
+              <span>Show MDPreview Badge</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Card Preview & Actions -->
+      <div class="card-preview-panel">
+        <!-- Action Toolbar -->
+        <div class="card-action-bar">
+          <button id="btnCopyCard" type="button" class="btn btn-primary" title="Copy card image to clipboard">
+            <iconify-icon icon="solar:copy-linear"></iconify-icon>
+            Copy Image
+          </button>
+          <button id="btnDownloadCard" type="button" class="btn btn-outline" title="Download 2x PNG image">
+            <iconify-icon icon="solar:download-linear"></iconify-icon>
+            Download PNG (2x)
+          </button>
+          <button id="btnOpenViewer" type="button" class="btn btn-outline" title="Open this content in Viewer">
+            <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+            Open in Editor
+          </button>
+        </div>
+
+        <!-- Live Preview Stage -->
+        <div class="preview-stage">
+          <div id="cardWrapper" class="card-export-wrapper theme-minimal">
+            <div id="cardElement" class="social-card card-style-minimal" data-ratio="auto" data-font="sans" data-padding="normal">
+              <!-- Author Header -->
+              <div class="card-header">
+                <div class="author-info">
+                  <div id="displayAuthorAvatar" class="author-avatar">糖</div>
+                  <div class="author-meta">
+                    <span id="displayAuthorName" class="author-name">糖糖it</span>
+                    <span id="displayAuthorHandle" class="author-handle">@tangtang-it</span>
+                  </div>
+                </div>
+                <div id="displayDate" class="card-date">Oct 1, 2026</div>
+              </div>
+
+              <!-- Card Body Content -->
+              <div id="cardContent" class="card-body markdown-body">
+                <!-- Content will be rendered here -->
+              </div>
+
+              <!-- Card Footer Watermark -->
+              <div id="displayWatermark" class="card-footer-watermark">
+                <img src="/favicon.svg" alt="Logo" class="watermark-logo" width="16" height="16">
+                <span>Created with <strong>MDPreview.dev</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Highlights -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon>
+        </div>
+        <h3 class="feature-title">High-Res Retina Export</h3>
+        <p class="feature-desc">Export crisp 2x resolution PNGs with crystal-clear fonts and syntax-highlighted code blocks, optimized for social feeds.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <iconify-icon icon="solar:palette-bold"></iconify-icon>
+        </div>
+        <h3 class="feature-title">Designer Color Palettes</h3>
+        <p class="feature-desc">Choose from 6 handcrafted aesthetic themes with gradients, soft shadows, and dark mode, tailored for modern developers and writers.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <iconify-icon icon="solar:clipboard-check-bold"></iconify-icon>
+        </div>
+        <h3 class="feature-title">One-Click Clipboard Copy</h3>
+        <p class="feature-desc">Generate and copy image blobs directly to your clipboard. Paste right into Twitter, Xiaohongshu, WeChat, or Slack without saving files.</p>
+      </div>
+    </div>
+
+    <!-- How-to Guide -->
+    <section class="guide-section">
+      <h2 class="section-title">How to Turn Markdown into Social Cards</h2>
+      <div class="steps-container">
+        <div class="step-card">
+          <span class="step-number">01</span>
+          <h4>Write or Paste Markdown</h4>
+          <p>Type your notes, quotes, or code snippets, or click "From Editor" to load your current MDPreview draft.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">02</span>
+          <h4>Pick Theme & Dimensions</h4>
+          <p>Select your favorite backdrop theme, customize author credentials, and choose social aspect ratios (Square, 3:4, 16:9).</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">03</span>
+          <h4>Copy Image or Download</h4>
+          <p>Click "Copy Image" to paste directly into your social apps, or download a 2x Retina PNG to share anywhere.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>Where are the exported cards hosted?</h4>
+          <p>Nowhere! Card images are generated 100% locally in your browser memory and downloaded directly to your device. We do not store or track your content.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Can I use these cards for commercial projects?</h4>
+          <p>Yes. Any image or card you generate with MDPreview is 100% yours to publish, share, and monetize without attribution or restrictions.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Does it support code syntax highlighting?</h4>
+          <p>Yes, code blocks with language tags (e.g. `javascript, `python, `
+ust) are highlighted using highlight.js with beautiful styling.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What aspect ratio should I use for Xiaohongshu?</h4>
+          <p>We recommend using the "Portrait 3:4" aspect ratio for Xiaohongshu and Instagram stories for the best vertical viewing experience.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="brand">
+          <img src="/favicon.svg" alt="MDPreview Logo" width="24" height="24">
+          <span>MDPreview</span>
+        </div>
+        <p class="footer-text">Instant, beautiful Markdown workspace with 100% client-side privacy.</p>
+        <div class="footer-copy">© 2026 MDPreview. Crafted by <a href="https://tangtangit.com" target="_blank" rel="noopener">糖糖it</a>.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Ecosystem</h4>
+        <ul>
+          <li><a href="/">Live Markdown Viewer</a></li>
+          <li><a href="/pdf-to-md.html">PDF to Markdown</a></li>
+          <li><a href="/md-to-card.html">MD to Card Maker</a></li>
+          <li><a href="/#tab-basic">Syntax Cheatsheet</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Languages</h4>
+        <ul>
+          <li><a href="/">English (Global)</a></li>
+          <li><a href="/es/">Español</a></li>
+          <li><a href="/pt/">Português</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal & Support</h4>
+        <ul>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+          <li><a href="/terms.html">Terms of Service</a></li>
+          <li><a href="/contact.html">Contact & Feedback</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/md-to-card.ts"></script>
+</body>
+</html>

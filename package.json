@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "highlight.js": "^11.11.1",
+    "html-to-image": "^1.11.13",
     "iconify-icon": "^3.0.3",
-    "marked": "^15.0.7"
+    "marked": "^15.0.7",
+    "pdfjs-dist": "^6.3.289"
   },
   "devDependencies": {
     "typescript": "^5.8.0",

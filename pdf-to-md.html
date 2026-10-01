@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="github-light">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-45DDC4ZEJW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-45DDC4ZEJW');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to Markdown Converter Online - Free, Private & Instant | MDPreview</title>
+  <meta name="author" content="糖糖it">
+  <meta name="application-name" content="MDPreview">
+  <meta name="apple-mobile-web-app-title" content="MDPreview">
+  <meta name="description" content="Convert PDF documents to clean GitHub Flavored Markdown directly in your browser. 100% private, zero cloud upload, automatic heading and structure extraction.">
+  <link rel="canonical" href="https://mdpreview.dev/pdf-to-md.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MDPreview">
+  <meta property="og:url" content="https://mdpreview.dev/pdf-to-md.html">
+  <meta property="og:title" content="PDF to Markdown Converter Online - Free & Private | MDPreview">
+  <meta property="og:description" content="Convert PDF files to clean Markdown in seconds. 100% in-browser client-side processing with zero server uploads.">
+  <meta property="og:image" content="https://mdpreview.dev/mdpreview.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PDF to Markdown Converter Online | MDPreview">
+  <meta name="twitter:description" content="Convert PDF documents to clean Markdown with zero server uploads.">
+  <meta name="twitter:image" content="https://mdpreview.dev/mdpreview.png">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <!-- Structured Data: WebApplication & FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "MDPreview PDF to Markdown Converter",
+        "url": "https://mdpreview.dev/pdf-to-md.html",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Browser-based PDF to Markdown converter that runs entirely client-side with 100% privacy guarantee."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is my PDF uploaded to any server?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. All PDF parsing and Markdown conversion run 100% locally in your browser memory using PDF.js. Your documents never touch any server or cloud database."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does heading detection work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The converter analyzes the font size and font weight metrics of every text item on the page relative to the median body font size, mapping titles to H1, H2, and H3 headers automatically."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I edit the generated Markdown immediately?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! You can view and edit the generated Markdown in real-time, preview it side-by-side, download the .md file, or open it directly in the MDPreview live editor."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <a href="/" class="brand">
+      <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="32" height="32">
+      <span>MDPreview</span>
+      <span class="brand-badge">PRO</span>
+    </a>
+    <nav class="nav-ecosystem" aria-label="Tool Ecosystem">
+      <a href="/" class="nav-link">
+        <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+        <span>Viewer</span>
+      </a>
+      <a href="/#tab-basic" class="nav-link">
+        <iconify-icon icon="solar:book-bookmark-bold"></iconify-icon>
+        <span>Cheatsheet</span>
+      </a>
+      <a href="/pdf-to-md.html" class="nav-link active">
+        <iconify-icon icon="solar:file-corrupted-linear"></iconify-icon>
+        <span>PDF to MD</span>
+      </a>
+      <a href="/md-to-card.html" class="nav-link">
+        <iconify-icon icon="solar:gallery-wide-linear"></iconify-icon>
+        <span>MD to Card</span>
+      </a>
+    </nav>
+    <div class="header-actions">
+      <select id="themeSelect" class="select-control" aria-label="Select Theme">
+        <option value="github-light">Theme: GitHub Light</option>
+        <option value="github-dark">Theme: GitHub Dark</option>
+        <option value="sepia">Theme: Warm Sepia</option>
+        <option value="midnight">Theme: Midnight Dark</option>
+      </select>
+      <a href="/" class="btn btn-outline" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+        <span>Live Editor</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="page-container tool-page">
+    <!-- Hero Header -->
+    <div class="tool-hero">
+      <span class="tool-badge">
+        <iconify-icon icon="solar:shield-check-bold"></iconify-icon>
+        100% Client-Side & Private
+      </span>
+      <h1 class="tool-title">Convert PDF to Clean Markdown Online</h1>
+      <p class="tool-desc">
+        Fast, zero-latency in-browser converter. Extract text, headings, lists, and formatting from PDF files into GitHub-flavored Markdown. 
+        Your files never leave your device.
+      </p>
+    </div>
+
+    <!-- Upload & Processing Section -->
+    <div class="tool-card-box">
+      <!-- Upload Dropzone -->
+      <div id="uploadSection" class="upload-section">
+        <div id="dropZone" class="drop-zone">
+          <input type="file" id="pdfFileInput" accept="application/pdf,.pdf" style="display:none;">
+          <div class="drop-icon">
+            <iconify-icon icon="solar:cloud-upload-linear"></iconify-icon>
+          </div>
+          <h3 class="drop-title">Drag & drop your PDF file here</h3>
+          <p class="drop-hint">Supports text-based PDF documents up to 50MB</p>
+          <div class="drop-actions">
+            <button id="btnSelectFile" type="button" class="btn btn-primary">
+              <iconify-icon icon="solar:file-linear"></iconify-icon>
+              Choose PDF File
+            </button>
+            <button id="btnSamplePdf" type="button" class="btn btn-outline">
+              <iconify-icon icon="solar:magic-stick-3-linear"></iconify-icon>
+              Try Sample Doc
+            </button>
+          </div>
+        </div>
+
+        <!-- Options Drawer -->
+        <div class="options-bar">
+          <label class="checkbox-label">
+            <input type="checkbox" id="optHeadings" checked>
+            <span>Auto-detect Headings (by font size)</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optDividers" checked>
+            <span>Insert Page Dividers (---)</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optLineBreaks">
+            <span>Preserve Hard Line Breaks</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Processing Progress Bar -->
+      <div id="progressContainer" class="progress-container" style="display:none;">
+        <div class="progress-bar-wrapper">
+          <div id="progressBar" class="progress-bar-inner"></div>
+        </div>
+        <p id="progressText" class="progress-status-text">Parsing document structure...</p>
+      </div>
+
+      <!-- Result View -->
+      <div id="resultSection" class="result-section" style="display:none;">
+        <!-- Top Toolbar -->
+        <div class="result-toolbar">
+          <div class="result-stats">
+            <span class="stat-pill"><strong id="statPages">0</strong> Pages</span>
+            <span class="stat-pill"><strong id="statWords">0</strong> Words</span>
+            <span class="stat-pill"><strong id="statChars">0</strong> Chars</span>
+          </div>
+
+          <div class="tab-switch">
+            <button id="tabEditor" type="button" class="tab-btn active">Markdown Source</button>
+            <button id="tabPreview" type="button" class="tab-btn">Rendered HTML</button>
+          </div>
+
+          <div class="result-actions">
+            <button id="btnCopyMd" type="button" class="btn btn-outline" title="Copy Markdown to clipboard">
+              <iconify-icon icon="solar:copy-linear"></iconify-icon>
+              Copy
+            </button>
+            <button id="btnDownloadMd" type="button" class="btn btn-outline" title="Download .md file">
+              <iconify-icon icon="solar:download-linear"></iconify-icon>
+              Download
+            </button>
+            <button id="btnOpenViewer" type="button" class="btn btn-primary" title="Open in MDPreview Live Editor">
+              <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+              Open in Editor
+            </button>
+            <button id="btnOpenCard" type="button" class="btn btn-outline" title="Turn into shareable card">
+              <iconify-icon icon="solar:gallery-wide-linear"></iconify-icon>
+              Make Card
+            </button>
+            <button id="btnConvertAnother" type="button" class="btn btn-outline" title="Convert another file">
+              <iconify-icon icon="solar:restart-linear"></iconify-icon>
+              New File
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Views -->
+        <div class="output-container">
+          <textarea id="mdOutput" class="md-result-textarea" spellcheck="false" placeholder="Markdown will appear here..."></textarea>
+          <div id="mdPreview" class="md-result-preview markdown-body" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Highlights -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <iconify-icon icon="solar:shield-check-bold"></iconify-icon>
+        </div>
+        <h3 class="feature-title">100% Private & Client-Side</h3>
+        <p class="feature-desc">All parsing runs inside your browser using WebAssembly and PDF.js. Your sensitive contracts, notes, and research never leave your local machine.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <iconify-icon icon="solar:tuning-square-2-bold"></iconify-icon>
+        </div>
+        <h3 class="feature-title">Smart Structural Analysis</h3>
+        <p class="feature-desc">Automatically identifies title hierarchies (H1/H2/H3), bullet points, numbered lists, and monospace code blocks based on spatial typography layout.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <iconify-icon icon="solar:refresh-circle-bold"></iconify-icon>
+        </div>
+        <h3 class="feature-title">Seamless Ecosystem Flow</h3>
+        <p class="feature-desc">Jump straight from converted Markdown to MDPreview live editor, or create viral social knowledge cards with one click in MD to Card.</p>
+      </div>
+    </div>
+
+    <!-- How-to Guide Section -->
+    <section class="guide-section">
+      <h2 class="section-title">How to Convert PDF to Markdown Online</h2>
+      <div class="steps-container">
+        <div class="step-card">
+          <span class="step-number">01</span>
+          <h4>Select or Drop PDF</h4>
+          <p>Drag your PDF file into the drop zone, or click "Choose PDF File" to select any document from your computer.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">02</span>
+          <h4>Instant In-Browser Conversion</h4>
+          <p>MDPreview processes every page locally, grouping lines, recognizing heading scales, and generating clean Markdown.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">03</span>
+          <h4>Copy, Download, or Edit</h4>
+          <p>Copy formatted Markdown directly, download the .md file, or open it in our dual-pane live editor for further writing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>Is my data uploaded to any remote server?</h4>
+          <p>No. MDPreview runs 100% locally in your browser memory. We do not store, log, or upload your PDF files to any cloud server.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Can it convert scanned image-only PDFs?</h4>
+          <p>This tool is designed for text-based PDFs (generated from Word, LaTeX, Google Docs, Notion, or export tools). Scanned image-only PDFs require OCR processing.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Is there a file size limit?</h4>
+          <p>Since processing occurs directly in your computer's RAM, files up to 50MB and hundreds of pages convert with lightning speed without server limits.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Is this tool free to use?</h4>
+          <p>Yes, MDPreview PDF to MD is completely free and open-source with no registration or subscription required.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="brand">
+          <img src="/favicon.svg" alt="MDPreview Logo" width="24" height="24">
+          <span>MDPreview</span>
+        </div>
+        <p class="footer-text">Instant, beautiful Markdown workspace with 100% client-side privacy.</p>
+        <div class="footer-copy">© 2026 MDPreview. Crafted by <a href="https://tangtangit.com" target="_blank" rel="noopener">糖糖it</a>.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Ecosystem</h4>
+        <ul>
+          <li><a href="/">Live Markdown Viewer</a></li>
+          <li><a href="/pdf-to-md.html">PDF to Markdown</a></li>
+          <li><a href="/md-to-card.html">MD to Card Maker</a></li>
+          <li><a href="/#tab-basic">Syntax Cheatsheet</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Languages</h4>
+        <ul>
+          <li><a href="/">English (Global)</a></li>
+          <li><a href="/es/">Español</a></li>
+          <li><a href="/pt/">Português</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal & Support</h4>
+        <ul>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+          <li><a href="/terms.html">Terms of Service</a></li>
+          <li><a href="/contact.html">Contact & Feedback</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/pdf-to-md.ts"></script>
+</body>
+</html>

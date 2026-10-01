@@ -6,6 +6,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        pdfToMd: resolve(__dirname, 'pdf-to-md.html'),
+        mdToCard: resolve(__dirname, 'md-to-card.html'),
         es: resolve(__dirname, 'es/index.html'),
         pt: resolve(__dirname, 'pt/index.html'),
         about: resolve(__dirname, 'about.html'),

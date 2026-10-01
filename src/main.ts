@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnDownloadMd = document.getElementById('btnDownloadMd');
   const btnExportHtml = document.getElementById('btnExportHtml');
   const btnClear = document.getElementById('btnClear');
+  const btnMakeCard = document.getElementById('btnMakeCard');
   const btnOpenFile = document.getElementById('btnOpenFile');
 
   if (!editor || !preview) return;
@@ -245,6 +246,13 @@ document.addEventListener('DOMContentLoaded', () => {
     editor.style.borderColor = 'var(--border-color)';
     const file = e.dataTransfer?.files[0];
     if (file) {
+      if (file.name.toLowerCase().endsWith('.pdf') || file.type === 'application/pdf') {
+        showToast('Redirecting to PDF to MD Converter...');
+        setTimeout(() => {
+          window.location.href = '/pdf-to-md.html';
+        }, 600);
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (event) => {
         editor.value = event.target?.result as string || '';
@@ -288,6 +296,10 @@ document.addEventListener('DOMContentLoaded', () => {
     a.click();
     URL.revokeObjectURL(url);
     showToast('Exported export.html');
+  });
+
+  btnMakeCard?.addEventListener('click', () => {
+    localStorage.setItem('mdpreview_content', editor.value);
   });
 
   btnClear?.addEventListener('click', () => {
