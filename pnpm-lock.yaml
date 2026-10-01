@@ -17,9 +17,15 @@ importers:
       iconify-icon:
         specifier: ^3.0.3
         version: 3.0.3
+      katex:
+        specifier: ^0.18.9
+        version: 0.18.9
       marked:
         specifier: ^15.0.7
         version: 15.0.7
+      marked-katex-extension:
+        specifier: ^5.1.13
+        version: 5.1.13(katex@0.18.9)(marked@15.0.7)
       pdfjs-dist:
         specifier: ^6.3.289
         version: 6.3.289
@@ -409,6 +415,10 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  commander@15.0.0:
+    resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
+    engines: {node: '>=22.12.0'}
+
   esbuild@0.25.0:
     resolution: {integrity: sha512-BXq5mqc8ltbaN34cDqWuYKyNhX8D/Z0J1xdtdQ8UcIIIyJyz+ZMKUt58tF3SrZ85jcfN/PZYhjR5uDQAYNVbuw==}
     engines: {node: '>=18'}
@@ -437,6 +447,16 @@ packages:
 
   iconify-icon@3.0.3:
     resolution: {integrity: sha512-n4ZIChz3N75KqFSWLt9hHGzbrqGQeeoFxCE+nND4WFFa88x8AW8GvmnVZaVNYErhhiZkxJhBfVKMIGrF1wt3hg==}
+
+  katex@0.18.9:
+    resolution: {integrity: sha512-8ad9RyoKsb/g8/yLFE+KAlP+DhbCTRUNi/V9XGsxn0R+trJJltNwzcDNo0q/DEkOy5fQUQTAQyCXCYSE+OakTQ==}
+    hasBin: true
+
+  marked-katex-extension@5.1.13:
+    resolution: {integrity: sha512-+6gVygGg5at9g+YsuIQZk7XcAc6Pg1P0grEJKEWvF7DAwceZ7ZIvU0fhQe6auUqSbnPmSjJxZuICdSCdbGaFRw==}
+    peerDependencies:
+      katex: '>=0.16 <0.19'
+      marked: '>=4 <19'
 
   marked@15.0.7:
     resolution: {integrity: sha512-dgLIeKGLx5FwziAnsk4ONoGwHwGPJzselimvlVskE9XLN4Orv9u2VA3GWw/lYUqjfA0rUT/6fqKwfZJapP9BEg==}
@@ -728,6 +748,8 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
+  commander@15.0.0: {}
+
   esbuild@0.25.0:
     optionalDependencies:
       '@esbuild/aix-ppc64': 0.25.0
@@ -770,6 +792,15 @@ snapshots:
   iconify-icon@3.0.3:
     dependencies:
       '@iconify/types': 2.0.0
+
+  katex@0.18.9:
+    dependencies:
+      commander: 15.0.0
+
+  marked-katex-extension@5.1.13(katex@0.18.9)(marked@15.0.7):
+    dependencies:
+      katex: 0.18.9
+      marked: 15.0.7
 
   marked@15.0.7: {}
 

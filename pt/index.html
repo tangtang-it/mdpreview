@@ -155,6 +155,14 @@
     </div>
 
     <div class="toolbar-controls">
+            <label class="toolbar-checkbox" title="Keep editor and preview scrolling in sync">
+        <input type="checkbox" id="toggleSyncScroll" checked>
+        <span><iconify-icon icon="solar:round-transfer-vertical-linear"></iconify-icon> Sync Scroll</span>
+      </label>
+      <button id="btnExportPdf" class="btn-icon-text btn-outline" title="Print or Export as Clean PDF">
+        <iconify-icon icon="solar:printer-linear"></iconify-icon>
+        <span>PDF</span>
+      </button>
       <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copiar Markdown">
         <iconify-icon icon="solar:clipboard-text-linear"></iconify-icon>
         <span>Copiar MD</span>
@@ -173,7 +181,20 @@
   <!-- Workspace Container -->
   <main id="workspace" class="workspace-container mode-split">
     <div class="pane pane-editor">
-            <!-- Formatting Toolbar -->
+            <!-- Pane Header -->
+      <div class="pane-card-header">
+        <div class="pane-title-group">
+          <span class="pane-badge">Editor</span>
+          <span class="pane-subinfo">Markdown</span>
+        </div>
+        <div class="pane-actions">
+          <button id="btnEditorFullscreen" class="btn-pane-action" type="button" title="Toggle Fullscreen Focus">
+            <iconify-icon icon="solar:maximize-square-linear"></iconify-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Formatting Toolbar -->
       <div class="editor-header-bar">
         <div class="format-btn-group">
           <button class="btn-format" data-action="bold" title="Bold (**text**)"><iconify-icon icon="solar:text-bold-bold"></iconify-icon></button>

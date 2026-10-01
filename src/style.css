@@ -1874,3 +1874,360 @@ body.is-resizing .pane-preview {
     min-height: auto;
   }
 }
+
+
+/* ==========================================================================
+   Enhanced Pane Card Layout & Mobile Adaptations (Inspired by Competitors)
+   ========================================================================== */
+
+/* Toolbar Checkbox (Sync Scroll) */
+.toolbar-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.toolbar-checkbox:hover {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.toolbar-checkbox input[type="checkbox"] {
+  accent-color: var(--accent-color);
+  width: 0.95rem;
+  height: 0.95rem;
+  cursor: pointer;
+}
+
+.toolbar-checkbox span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Pane Card Headers & Footers */
+.pane-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.85rem;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+  min-height: 38px;
+  box-sizing: border-box;
+}
+
+.pane-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pane-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+}
+
+.pane-badge.badge-preview {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+[data-theme="github-dark"] .pane-badge.badge-preview,
+[data-theme="cyber"] .pane-badge.badge-preview {
+  background-color: #064e3b;
+  color: #34d399;
+}
+
+.pane-subinfo {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.pane-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-pane-action {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-pane-action:hover {
+  background-color: var(--bg-elevated);
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+
+/* Pane Footer */
+.pane-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.85rem;
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  user-select: none;
+  min-height: 28px;
+  box-sizing: border-box;
+}
+
+.pane-footer-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+}
+
+.pane-footer-badge.badge-success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+[data-theme="github-dark"] .pane-footer-badge.badge-success,
+[data-theme="cyber"] .pane-footer-badge.badge-success {
+  background-color: #064e3b;
+  color: #4ade80;
+  border-color: #047857;
+}
+
+/* Preview Scroll Container */
+.preview-scroll-container {
+  flex: 1 1 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+.pane-preview .markdown-body {
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+/* Mobile Quick Symbols Bar (hidden by default on desktop) */
+.mobile-symbols-bar {
+  display: none;
+  overflow-x: auto;
+  white-space: nowrap;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.3rem 0.5rem;
+  gap: 0.35rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-symbols-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.sym-btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.sym-btn:active {
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+}
+
+/* Responsive Mobile Layout ("d 768px) */
+@media (max-width: 768px) {
+  .app-header {
+    height: auto;
+    padding: 0.6rem 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-ecosystem {
+    display: none;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+
+  .workspace-toolbar {
+    padding: 0.5rem 0.75rem;
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .toolbar-stats {
+    justify-content: space-between;
+    font-size: 0.75rem;
+  }
+
+  .toolbar-controls {
+    justify-content: flex-end;
+    overflow-x: auto;
+  }
+
+  .workspace-container {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0.75rem;
+    gap: 1rem;
+    background-color: var(--bg-surface);
+  }
+
+  .pane {
+    height: auto !important;
+    min-height: 380px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    background-color: var(--bg-elevated);
+  }
+
+  .pane-editor {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .pane-preview {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .editor-textarea {
+    height: 320px !important;
+    min-height: 280px;
+    padding: 1rem;
+  }
+
+  .preview-scroll-container {
+    height: 380px !important;
+    min-height: 320px;
+  }
+
+  .pane-preview .markdown-body {
+    padding: 1.25rem;
+  }
+
+  .mobile-symbols-bar {
+    display: flex;
+  }
+
+  .pane-resizer {
+    display: none !important;
+  }
+}
+
+/* Print Layout Optimization (@media print) */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+  }
+
+  .app-header,
+  .workspace-toolbar,
+  .pane-editor,
+  .pane-resizer,
+  .pane-card-header,
+  .pane-card-footer,
+  .seo-section,
+  .app-footer,
+  .toast,
+  .editor-header-bar,
+  .btn-copy-code {
+    display: none !important;
+  }
+
+  .workspace-container {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .pane-preview {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  .preview-scroll-container {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .markdown-body {
+    max-width: 100% !important;
+    padding: 0 !important;
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  .markdown-body pre,
+  .markdown-body code {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+  }
+
+  .markdown-body h1,
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+
+  .markdown-body table,
+  .markdown-body pre,
+  .markdown-body blockquote {
+    page-break-inside: avoid;
+  }
+}

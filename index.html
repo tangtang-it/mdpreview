@@ -208,6 +208,14 @@
     </div>
 
     <div class="toolbar-controls">
+            <label class="toolbar-checkbox" title="Keep editor and preview scrolling in sync">
+        <input type="checkbox" id="toggleSyncScroll" checked>
+        <span><iconify-icon icon="solar:round-transfer-vertical-linear"></iconify-icon> Sync Scroll</span>
+      </label>
+      <button id="btnExportPdf" class="btn-icon-text btn-outline" title="Print or Export as Clean PDF">
+        <iconify-icon icon="solar:printer-linear"></iconify-icon>
+        <span>PDF</span>
+      </button>
       <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copy Raw Markdown">
         <iconify-icon icon="solar:clipboard-text-linear"></iconify-icon>
         <span>Copy MD</span>
@@ -227,7 +235,20 @@
   <main id="workspace" class="workspace-container mode-split">
     <!-- Left Editor Pane -->
     <div class="pane pane-editor">
-            <!-- Formatting Toolbar -->
+            <!-- Pane Header -->
+      <div class="pane-card-header">
+        <div class="pane-title-group">
+          <span class="pane-badge">Editor</span>
+          <span class="pane-subinfo">Markdown</span>
+        </div>
+        <div class="pane-actions">
+          <button id="btnEditorFullscreen" class="btn-pane-action" type="button" title="Toggle Fullscreen Focus">
+            <iconify-icon icon="solar:maximize-square-linear"></iconify-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Formatting Toolbar -->
       <div class="editor-header-bar">
         <div class="format-btn-group">
           <button class="btn-format" data-action="bold" title="Bold (**text**)"><iconify-icon icon="solar:text-bold-bold"></iconify-icon></button>
@@ -243,7 +264,27 @@
         </div>
         <span style="font-size:0.75rem; color:var(--text-muted);">Markdown Source</span>
       </div>
+      <!-- Quick Mobile Markdown Bar -->
+      <div class="mobile-symbols-bar" aria-label="Quick Markdown Symbols">
+        <button type="button" class="sym-btn" data-sym="# ">#</button>
+        <button type="button" class="sym-btn" data-sym="## ">##</button>
+        <button type="button" class="sym-btn" data-sym="**" data-sym-end="**">B</button>
+        <button type="button" class="sym-btn" data-sym="*" data-sym-end="*">I</button>
+        <button type="button" class="sym-btn" data-sym="`" data-sym-end="`">`</button>
+        <button type="button" class="sym-btn" data-sym="- ">-</button>
+        <button type="button" class="sym-btn" data-sym="> ">&gt;</button>
+        <button type="button" class="sym-btn" data-sym="- [ ] ">[ ]</button>
+        <button type="button" class="sym-btn" data-sym="$" data-sym-end="$">$</button>
+        <button type="button" class="sym-btn" data-sym="  ">Tab</button>
+      </div>
+
       <textarea id="editor" class="editor-textarea" placeholder="Type or paste your Markdown here, or drag & drop a .md file..." spellcheck="false"></textarea>
+
+      <!-- Pane Footer -->
+      <div class="pane-card-footer">
+        <span id="statEditorChars" class="pane-footer-text">0 characters</span>
+        <span class="pane-footer-badge">Live Input</span>
+      </div>
     </div>
 
     <!-- Draggable Split Resizer -->
@@ -253,7 +294,31 @@
 
     <!-- Right Preview Pane -->
     <div class="pane pane-preview">
-      <div id="preview" class="markdown-body"></div>
+      <!-- Preview Header -->
+      <div class="pane-card-header">
+        <div class="pane-title-group">
+          <span class="pane-badge badge-preview">Preview</span>
+          <span class="pane-subinfo">HTML & KaTeX</span>
+        </div>
+        <div class="pane-actions">
+          <button id="btnQuickCopyHtml" class="btn-pane-action" type="button" title="Quick Copy Rendered HTML">
+            <iconify-icon icon="solar:copy-linear"></iconify-icon>
+          </button>
+          <button id="btnPreviewFullscreen" class="btn-pane-action" type="button" title="Toggle Fullscreen Preview">
+            <iconify-icon icon="solar:maximize-square-linear"></iconify-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-scroll-container">
+        <div id="preview" class="markdown-body"></div>
+      </div>
+
+      <!-- Preview Footer -->
+      <div class="pane-card-footer">
+        <span id="statPreviewChars" class="pane-footer-text">0 rendered chars</span>
+        <span class="pane-footer-badge badge-success">PDF-Ready</span>
+      </div>
     </div>
   </main>
 

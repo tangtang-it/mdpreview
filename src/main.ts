@@ -1,5 +1,7 @@
 import { marked } from 'marked';
 import hljs from 'highlight.js';
+import markedKatex from 'marked-katex-extension';
+import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github.css';
 import 'iconify-icon';
 import './style.css';
@@ -45,6 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnMakeCard = document.getElementById('btnMakeCard');
   const btnOpenFile = document.getElementById('btnOpenFile');
   const paneResizer = document.getElementById('paneResizer');
+  const previewScrollContainer = (document.querySelector('.preview-scroll-container') as HTMLElement) || preview;
+  const toggleSyncScroll = document.getElementById('toggleSyncScroll') as HTMLInputElement;
+  const btnExportPdf = document.getElementById('btnExportPdf');
+  const btnQuickCopyHtml = document.getElementById('btnQuickCopyHtml');
+  const btnEditorFullscreen = document.getElementById('btnEditorFullscreen');
+  const btnPreviewFullscreen = document.getElementById('btnPreviewFullscreen');
+  const statEditorChars = document.getElementById('statEditorChars');
+  const statPreviewChars = document.getElementById('statPreviewChars');
 
   if (!editor || !preview) return;
 
@@ -52,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
     gfm: true,
     breaks: true
   });
+
+  marked.use(markedKatex({
+    throwOnError: false
+  }));
 
   const renderer = new marked.Renderer();
   renderer.code = function({ text, lang }: { text: string; lang?: string }) {
@@ -87,6 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statWords) statWords.textContent = words.toLocaleString();
     if (statChars) statChars.textContent = chars.toLocaleString();
     if (statReadTime) statReadTime.textContent = readTime + ' min';
+    if (statEditorChars) statEditorChars.textContent = chars.toLocaleString() + ' characters';
+    if (statPreviewChars) {
+      const renderedText = preview.innerText || preview.textContent || '';
+      statPreviewChars.textContent = renderedText.length.toLocaleString() + ' rendered chars';
+    }
   }
 
   let renderTimeout: any = null;
@@ -99,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTimeout = setTimeout(() => {
       preview.innerHTML = marked.parse(raw) as string;
       attachCodeCopyButtons();
+      updateStats(raw);
     }, 50);
   }
 
@@ -184,6 +204,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Mobile quick symbol bar buttons
+  document.querySelectorAll('.sym-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = btn as HTMLElement;
+      const sym = target.getAttribute('data-sym') || '';
+      const symEnd = target.getAttribute('data-sym-end') || '';
+      insertFormatting(sym, symEnd);
+    });
+  });
+
   // Draggable Split Pane Resizer
   let currentSplitRatio = parseFloat(localStorage.getItem('mdpreview_split_ratio') || '50');
   if (isNaN(currentSplitRatio) || currentSplitRatio < 15 || currentSplitRatio > 85) {
@@ -258,6 +289,42 @@ document.addEventListener('DOMContentLoaded', () => {
   btnModeSplit?.addEventListener('click', () => setViewMode('split'));
   btnModePreview?.addEventListener('click', () => setViewMode('preview'));
   btnModeEditor?.addEventListener('click', () => setViewMode('editor'));
+
+  // Panel fullscreen buttons (Focus Mode)
+  btnEditorFullscreen?.addEventListener('click', () => {
+    const current = localStorage.getItem('mdpreview_mode');
+    if (current === 'editor') {
+      setViewMode('split');
+    } else {
+      setViewMode('editor');
+      showToast('Editor Focus Mode');
+    }
+  });
+
+  btnPreviewFullscreen?.addEventListener('click', () => {
+    const current = localStorage.getItem('mdpreview_mode');
+    if (current === 'preview') {
+      setViewMode('split');
+    } else {
+      setViewMode('preview');
+      showToast('Preview Fullscreen Mode');
+    }
+  });
+
+  btnQuickCopyHtml?.addEventListener('click', () => {
+    navigator.clipboard.writeText(preview.innerHTML.replace(/<div class="md-preview-heading md-preview-h(\d)" role="heading" aria-level="\d">(.*?)<\/div>/g, '<h$1>$2</h$1>')).then(() => {
+      showToast('Rendered HTML copied to clipboard!');
+    });
+  });
+
+  btnExportPdf?.addEventListener('click', () => {
+    showToast('Opening print dialog for PDF export...');
+    setTimeout(() => {
+      window.print();
+    }, 200);
+  });
+
+
 
   const savedMode = (localStorage.getItem('mdpreview_mode') as 'split' | 'preview' | 'editor') || 'split';
   setViewMode(savedMode);
