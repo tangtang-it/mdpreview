@@ -284,20 +284,103 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Mode toggling */
-.mode-editor .pane-preview {
-  display: none;
-}
-.mode-editor .pane-editor {
-  flex: 1 1 100%;
+/* Mode toggling & Resizable Split View */
+.mode-split .pane-editor {
+  width: var(--editor-width, 50%);
+  flex: none;
+  min-width: 220px;
+  max-width: calc(100% - 220px);
   border-right: none;
 }
 
-.mode-preview .pane-editor {
-  display: none;
+.mode-split .pane-preview {
+  flex: 1 1 0;
+  min-width: 220px;
+}
+
+/* Draggable Split Resizer */
+.pane-resizer {
+  width: 9px;
+  margin: 0 -4px;
+  background-color: transparent;
+  cursor: col-resize;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: none;
+  transition: background-color 0.15s ease;
+}
+
+.pane-resizer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 1px;
+  background-color: var(--border-color);
+  transition: background-color 0.15s ease;
+}
+
+.resizer-handle {
+  width: 4px;
+  height: 24px;
+  border-radius: 9999px;
+  background-color: var(--text-muted);
+  opacity: 0.5;
+  z-index: 2;
+  transition: all 0.15s ease;
+}
+
+.pane-resizer:hover,
+.pane-resizer.is-dragging {
+  background-color: var(--accent-light);
+}
+
+.pane-resizer:hover::before,
+.pane-resizer.is-dragging::before {
+  background-color: var(--accent-color);
+}
+
+.pane-resizer:hover .resizer-handle,
+.pane-resizer.is-dragging .resizer-handle {
+  background-color: var(--accent-color);
+  opacity: 1;
+  height: 38px;
+}
+
+/* Global body dragging state */
+body.is-resizing {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+body.is-resizing .pane-editor textarea,
+body.is-resizing .pane-preview {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.mode-editor .pane-preview,
+.mode-editor .pane-resizer {
+  display: none !important;
+}
+.mode-editor .pane-editor {
+  width: 100% !important;
+  flex: 1 1 100% !important;
+  border-right: none;
+}
+
+.mode-preview .pane-editor,
+.mode-preview .pane-resizer {
+  display: none !important;
 }
 .mode-preview .pane-preview {
-  flex: 1 1 100%;
+  width: 100% !important;
+  flex: 1 1 100% !important;
 }
 
 /* ==========================================================================

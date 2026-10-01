@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnClear = document.getElementById('btnClear');
   const btnMakeCard = document.getElementById('btnMakeCard');
   const btnOpenFile = document.getElementById('btnOpenFile');
+  const paneResizer = document.getElementById('paneResizer');
 
   if (!editor || !preview) return;
 
@@ -183,6 +184,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Draggable Split Pane Resizer
+  let currentSplitRatio = parseFloat(localStorage.getItem('mdpreview_split_ratio') || '50');
+  if (isNaN(currentSplitRatio) || currentSplitRatio < 15 || currentSplitRatio > 85) {
+    currentSplitRatio = 50;
+  }
+
+  function applySplitRatio(percent: number) {
+    currentSplitRatio = percent;
+    workspace.style.setProperty('--editor-width', percent + '%');
+  }
+
+  applySplitRatio(currentSplitRatio);
+
+  if (paneResizer) {
+    let isDragging = false;
+
+    paneResizer.addEventListener('pointerdown', (e: PointerEvent) => {
+      isDragging = true;
+      paneResizer.setPointerCapture(e.pointerId);
+      paneResizer.classList.add('is-dragging');
+      document.body.classList.add('is-resizing');
+    });
+
+    paneResizer.addEventListener('pointermove', (e: PointerEvent) => {
+      if (!isDragging) return;
+      const rect = workspace.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const offsetX = e.clientX - rect.left;
+      let ratio = (offsetX / rect.width) * 100;
+
+      const minPercent = Math.max(15, (220 / rect.width) * 100);
+      const maxPercent = Math.min(85, 100 - minPercent);
+      ratio = Math.max(minPercent, Math.min(maxPercent, ratio));
+
+      applySplitRatio(ratio);
+    });
+
+    const stopDragging = (e: PointerEvent) => {
+      if (!isDragging) return;
+      isDragging = false;
+      paneResizer.classList.remove('is-dragging');
+      document.body.classList.remove('is-resizing');
+      try {
+        paneResizer.releasePointerCapture(e.pointerId);
+      } catch {}
+      localStorage.setItem('mdpreview_split_ratio', currentSplitRatio.toFixed(2));
+    };
+
+    paneResizer.addEventListener('pointerup', stopDragging);
+    paneResizer.addEventListener('pointercancel', stopDragging);
+
+    // Double-click resets to 50/50
+    paneResizer.addEventListener('dblclick', () => {
+      applySplitRatio(50);
+      localStorage.setItem('mdpreview_split_ratio', '50');
+      showToast('Split reset to 50/50');
+    });
+  }
+
   function setViewMode(mode: 'split' | 'preview' | 'editor') {
     workspace.classList.remove('mode-split', 'mode-preview', 'mode-editor');
     workspace.classList.add('mode-' + mode);
@@ -190,6 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btnModePreview?.classList.toggle('active', mode === 'preview');
     btnModeEditor?.classList.toggle('active', mode === 'editor');
     localStorage.setItem('mdpreview_mode', mode);
+    if (mode === 'split') {
+      applySplitRatio(currentSplitRatio);
+    }
   }
 
   btnModeSplit?.addEventListener('click', () => setViewMode('split'));
