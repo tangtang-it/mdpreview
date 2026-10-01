@@ -194,21 +194,65 @@
         </div>
       </div>
 
-      <!-- Formatting Toolbar -->
+            <!-- Formatting Toolbar -->
       <div class="editor-header-bar">
         <div class="format-btn-group">
-          <button class="btn-format" data-action="bold" title="Bold (**text**)"><iconify-icon icon="solar:text-bold-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="italic" title="Italic (*text*)"><iconify-icon icon="solar:text-italic-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="h2" title="Heading 2 (##)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon> H2</button>
-          <button class="btn-format" data-action="h3" title="Heading 3 (###)">H3</button>
-          <button class="btn-format" data-action="code" title="Inline Code"><iconify-icon icon="solar:code-2-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="codeblock" title="Code Block"><iconify-icon icon="solar:code-square-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="quote" title="Blockquote"><iconify-icon icon="solar:quote-down-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="table" title="Table"><iconify-icon icon="solar:widget-2-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="task" title="Task List"><iconify-icon icon="solar:check-square-bold"></iconify-icon></button>
-          <button class="btn-format" data-action="link" title="Hyperlink"><iconify-icon icon="solar:link-bold"></iconify-icon></button>
+          <!-- History Group -->
+          <div class="toolbar-group">
+            <button class="btn-format" data-action="undo" title="Undo (Ctrl+Z)"><iconify-icon icon="solar:undo-left-round-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="redo" title="Redo (Ctrl+Y)"><iconify-icon icon="solar:undo-right-round-bold"></iconify-icon></button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Headings Group -->
+          <div class="toolbar-group">
+            <button class="btn-format" data-action="h1" title="Heading 1 (#)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon><span class="btn-text-badge">1</span></button>
+            <button class="btn-format" data-action="h2" title="Heading 2 (##)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon><span class="btn-text-badge">2</span></button>
+            <button class="btn-format" data-action="h3" title="Heading 3 (###)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon><span class="btn-text-badge">3</span></button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Text Style Group -->
+          <div class="toolbar-group">
+            <button class="btn-format" data-action="bold" title="Bold (Ctrl+B)"><iconify-icon icon="solar:text-bold-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="italic" title="Italic (Ctrl+I)"><iconify-icon icon="solar:text-italic-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="strike" title="Strikethrough (~~text~~)"><iconify-icon icon="solar:strikethrough-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="mark" title="Highlight (==text==)"><iconify-icon icon="solar:highlighter-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="code" title="Inline Code (`code`)"><iconify-icon icon="solar:code-2-bold"></iconify-icon></button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Lists Group -->
+          <div class="toolbar-group">
+            <button class="btn-format" data-action="ul" title="Bullet List (- item)"><iconify-icon icon="solar:list-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="ol" title="Numbered List (1. item)"><iconify-icon icon="solar:list-arrow-down-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="task" title="Task List (- [ ] item)"><iconify-icon icon="solar:check-square-bold"></iconify-icon></button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Blocks & Inserts Group -->
+          <div class="toolbar-group">
+            <button class="btn-format" data-action="quote" title="Blockquote (> text)"><iconify-icon icon="solar:quote-down-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="codeblock" title="Code Block (```lang)"><iconify-icon icon="solar:code-square-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="math" title="LaTeX Math Block ($$ formula $$)"><iconify-icon icon="solar:calculator-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="table" title="Insert Table (3x3)"><iconify-icon icon="solar:widget-2-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="hr" title="Horizontal Rule (---)"><iconify-icon icon="solar:minus-square-bold"></iconify-icon></button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Links & Media Group -->
+          <div class="toolbar-group">
+            <button class="btn-format" data-action="link" title="Insert Link (Ctrl+K)"><iconify-icon icon="solar:link-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="image" title="Insert Image (![alt](url))"><iconify-icon icon="solar:gallery-bold"></iconify-icon></button>
+            <button class="btn-format" data-action="details" title="Collapsible Details (<details>)"><iconify-icon icon="solar:alt-arrow-down-bold"></iconify-icon></button>
+          </div>
         </div>
-        <span style="font-size:0.75rem; color:var(--text-muted);">Markdown Source</span>
+        <span class="editor-mode-label">Markdown Source</span>
       </div>
       <textarea id="editor" class="editor-textarea" placeholder="Digite ou cole seu Markdown aqui, ou arraste um arquivo .md..." spellcheck="false"></textarea>
     </div>

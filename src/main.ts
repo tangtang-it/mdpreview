@@ -205,16 +205,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const formatActions: Record<string, () => void> = {
-    bold: () => insertFormatting('**', '**', 'bold text'),
-    italic: () => insertFormatting('*', '*', 'italic text'),
+    undo: () => {
+      document.execCommand('undo');
+      renderMarkdown();
+    },
+    redo: () => {
+      document.execCommand('redo');
+      renderMarkdown();
+    },
+    h1: () => insertFormatting('\n# ', '\n', 'Heading 1'),
     h2: () => insertFormatting('\n## ', '\n', 'Heading 2'),
     h3: () => insertFormatting('\n### ', '\n', 'Heading 3'),
+    bold: () => insertFormatting('**', '**', 'bold text'),
+    italic: () => insertFormatting('*', '*', 'italic text'),
+    strike: () => insertFormatting('~~', '~~', 'strikethrough text'),
+    mark: () => insertFormatting('==', '==', 'highlighted text'),
     code: () => insertFormatting('`', '`', 'code'),
-    codeblock: () => insertFormatting('\n```javascript\n', '\n```\n', '// code here'),
-    quote: () => insertFormatting('\n> ', '\n', 'Quote here'),
-    table: () => insertFormatting('\n| Header 1 | Header 2 |\n| :--- | :--- |\n| Item 1 | Item 2 |\n'),
+    ul: () => insertFormatting('\n- ', '', 'List item'),
+    ol: () => insertFormatting('\n1. ', '', 'List item'),
     task: () => insertFormatting('\n- [ ] ', '', 'New task'),
-    link: () => insertFormatting('[', '](https://example.com)', 'link text')
+    quote: () => insertFormatting('\n> ', '\n', 'Quote here'),
+    codeblock: () => insertFormatting('\n```javascript\n', '\n```\n', '// code here'),
+    math: () => insertFormatting('\n$$\n', '\n$$\n', '\int_{0}^{\infty} f(x)dx'),
+    table: () => insertFormatting('\n| Column 1 | Column 2 | Column 3 |\n| :--- | :---: | ---: |\n| Item A | Centered | $10.00 |\n| Item B | Normal | $20.00 |\n'),
+    hr: () => insertFormatting('\n\n---\n\n', '', ''),
+    link: () => insertFormatting('[', '](https://example.com)', 'link text'),
+    image: () => insertFormatting('![', '](https://picsum.photos/600/300)', 'image description'),
+    details: () => insertFormatting('\n<details>\n<summary>', '</summary>\n\nDetailed content goes here\n</details>\n', 'Click to expand')
   };
 
   document.querySelectorAll('.btn-format').forEach(btn => {
@@ -398,6 +415,24 @@ document.addEventListener('DOMContentLoaded', () => {
       editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
       editor.selectionStart = editor.selectionEnd = start + 2;
       renderMarkdown();
+      return;
+    }
+
+    // Keyboard shortcuts for power users (Ctrl/Cmd)
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault();
+        formatActions.bold();
+      } else if (e.key === 'i' || e.key === 'I') {
+        e.preventDefault();
+        formatActions.italic();
+      } else if (e.key === 'k' || e.key === 'K') {
+        e.preventDefault();
+        formatActions.link();
+      } else if (e.key === 'e' || e.key === 'E') {
+        e.preventDefault();
+        formatActions.code();
+      }
     }
   });
 
