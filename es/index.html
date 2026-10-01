@@ -102,408 +102,175 @@
 
   <!-- App Header -->
   <header class="app-header">
-    <a href="/es/" class="brand">
-      <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="32" height="32">
-      <span>MDPreview</span>
-      <span class="brand-badge">ES</span>
-    </a>
-    <nav class="nav-ecosystem" aria-label="Tool Ecosystem">
-      <a href="/" class="nav-link active">
-        <iconify-icon icon="solar:document-text-bold"></iconify-icon>
-        <span>Viewer</span>
+    <div class="header-left">
+      <a href="/es/" class="brand">
+        <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="30" height="30">
+        <span>MDPreview</span>
+        <span class="brand-badge">PRO</span>
       </a>
-      <a href="#tab-basic" class="nav-link">
-        <iconify-icon icon="solar:book-bookmark-bold"></iconify-icon>
-        <span>Cheatsheet</span>
-      </a>
-      <a href="/pdf-to-md.html" class="nav-link">
-        <iconify-icon icon="solar:file-corrupted-linear"></iconify-icon>
-        <span>PDF to MD</span>
-      </a>
-      <a href="/md-to-card.html" class="nav-link">
-        <iconify-icon icon="solar:gallery-wide-linear"></iconify-icon>
-        <span>MD to Card</span>
-      </a>
-    </nav>
+      <nav class="nav-ecosystem" aria-label="Tool Ecosystem">
+        <a href="/es/" class="nav-link active">
+          <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+          <span>Visor</span>
+        </a>
+        <a href="#tab-basic" class="nav-link">
+          <iconify-icon icon="solar:book-bookmark-bold"></iconify-icon>
+          <span>Guía Rápida</span>
+        </a>
+        <a href="/pdf-to-md.html" class="nav-link">
+          <iconify-icon icon="solar:file-corrupted-linear"></iconify-icon>
+          <span>PDF a MD</span>
+        </a>
+        <a href="/md-to-card.html" class="nav-link">
+          <iconify-icon icon="solar:gallery-wide-linear"></iconify-icon>
+          <span>MD a Tarjeta</span>
+        </a>
+      </nav>
+    </div>
+
     <div class="header-actions">
-      <select id="sampleSelect" class="select-control" aria-label="Cargar Ejemplo">
-        <option value="spec">Ejemplo: Especificación RFC (Completa)</option>
-        <option value="readme">Ejemplo: Guía README</option>
-        <option value="math">Ejemplo: Fórmulas Matemáticas</option>
-        <option value="llm">Ejemplo: Respuesta de IA</option>
-      </select>
+      <!-- Document Preset Picker -->
+      <div class="header-control-item" title="Load Sample Markdown Template">
+        <select id="sampleSelect" class="select-control" aria-label="Load Sample Markdown">
+          <option value="spec">Ejemplo: Especificación RFC (Completa)</option>
+          <option value="readme">Ejemplo: Guía README</option>
+          <option value="math">Ejemplo: Fórmulas Matemáticas</option>
+          <option value="llm">Ejemplo: Respuesta de IA</option>
+        </select>
+      </div>
 
-      <select id="themeSelect" class="select-control" aria-label="Elegir Tema">
-        <option value="github-light">Tema: GitHub Claro</option>
-        <option value="github-dark">Tema: GitHub Oscuro</option>
-        <option value="sepia">Tema: Sepia Cálido</option>
-        <option value="cyber">Tema: Medianoche</option>
-      </select>
+      <!-- Visual Theme Switcher -->
+      <div class="header-control-item" title="Switch Color Theme">
+        <select id="themeSelect" class="select-control" aria-label="Select Color Theme">
+          <option value="github-light">Tema: Claro</option>
+          <option value="github-dark">Tema: Oscuro</option>
+          <option value="sepia">Tema: Sepia</option>
+          <option value="cyber">Tema: Midnight</option>
+        </select>
+      </div>
 
-      <div class="btn-group">
-        <button id="btnModeSplit" class="btn-icon-text active" title="Pantalla Dividida">
+      <!-- Segmented View Mode Controller -->
+      <div class="btn-group view-mode-segmented" role="group" aria-label="View Mode Switcher">
+        <button id="btnModeSplit" class="btn-icon-text active" title="Split Screen Mode">
           <iconify-icon icon="solar:align-horizontal-center-bold"></iconify-icon>
           <span>Dividir</span>
         </button>
-        <button id="btnModePreview" class="btn-icon-text" title="Solo Vista Previa">
+        <button id="btnModePreview" class="btn-icon-text" title="Preview Only Mode">
           <iconify-icon icon="solar:eye-bold"></iconify-icon>
           <span>Vista</span>
         </button>
-        <button id="btnModeEditor" class="btn-icon-text" title="Solo Editor">
+        <button id="btnModeEditor" class="btn-icon-text" title="Editor Only Mode">
           <iconify-icon icon="solar:pen-bold"></iconify-icon>
           <span>Editor</span>
         </button>
       </div>
 
-      <input type="file" id="fileInput" accept=".md,.markdown,.txt" style="display: none;">
-      <button id="btnOpenFile" class="btn-icon-text btn-outline" title="Abrir Archivo">
-        <iconify-icon icon="solar:folder-open-bold"></iconify-icon>
-        <span>Abrir</span>
-      </button>
+      <!-- Quick Export & Card Actions on Header -->
+      <div class="header-primary-actions">
+        <a href="/md-to-card.html" id="btnMakeCard" class="btn btn-outline btn-header-action" title="Generate Social & Knowledge Card">
+          <iconify-icon icon="solar:gallery-wide-bold"></iconify-icon>
+          <span>Tarjeta</span>
+        </a>
+        <button id="btnDownloadMd" class="btn btn-primary btn-header-action" title="Download Markdown Document (.md)">
+          <iconify-icon icon="solar:download-linear"></iconify-icon>
+          <span>Descargar</span>
+        </button>
+      </div>
 
-      <button id="btnCopyHtml" class="btn-icon-text btn-outline" title="Copiar HTML Formateado">
-        <iconify-icon icon="solar:copy-bold"></iconify-icon>
-        <span>Copiar HTML</span>
-      </button>
-
-      <button id="btnExportHtml" class="btn-icon-text btn-primary" title="Exportar HTML Autónomo">
-        <iconify-icon icon="solar:download-square-bold"></iconify-icon>
-        <span>Exportar</span>
+      <!-- Mobile Hamburger Button -->
+      <button id="btnMobileMenu" class="btn-mobile-menu" type="button" aria-label="Open Navigation & Tools Menu">
+        <iconify-icon icon="solar:hamburger-menu-linear"></iconify-icon>
       </button>
     </div>
   </header>
+
+  <!-- Mobile Navigation & Actions Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-hidden="true">
+    <div class="mobile-drawer-header">
+      <span class="mobile-drawer-title">Herramientas y Menú</span>
+      <button id="btnCloseMobileDrawer" class="btn-drawer-close" type="button" aria-label="Close Menu">
+        <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
+      </button>
+    </div>
+    <div class="mobile-drawer-content">
+      <div class="drawer-group">
+        <span class="drawer-group-title">Ecosystem</span>
+        <div class="drawer-links">
+          <a href="/es/" class="drawer-link active"><iconify-icon icon="solar:document-text-bold"></iconify-icon> Viewer</a>
+          <a href="/pdf-to-md.html" class="drawer-link"><iconify-icon icon="solar:file-corrupted-linear"></iconify-icon> PDF to MD</a>
+          <a href="/md-to-card.html" class="drawer-link"><iconify-icon icon="solar:gallery-wide-linear"></iconify-icon> MD to Card</a>
+          <a href="#tab-basic" class="drawer-link"><iconify-icon icon="solar:book-bookmark-bold"></iconify-icon> Cheatsheet</a>
+        </div>
+      </div>
+      <div class="drawer-group">
+        <span class="drawer-group-title">Export & Share</span>
+        <div class="drawer-actions-grid">
+          <button id="btnMobileCopyMd" class="drawer-btn" type="button"><iconify-icon icon="solar:copy-linear"></iconify-icon> Copy MD</button>
+          <button id="btnMobileCopyHtml" class="drawer-btn" type="button"><iconify-icon icon="solar:code-linear"></iconify-icon> Copy HTML</button>
+          <button id="btnMobileDownload" class="drawer-btn" type="button"><iconify-icon icon="solar:download-linear"></iconify-icon> Download .md</button>
+          <button id="btnMobileExportHtml" class="drawer-btn" type="button"><iconify-icon icon="solar:export-bold"></iconify-icon> Export HTML</button>
+          <button id="btnMobilePdf" class="drawer-btn" type="button"><iconify-icon icon="solar:printer-linear"></iconify-icon> Print PDF</button>
+          <a href="/md-to-card.html" class="drawer-btn" style="text-decoration:none;"><iconify-icon icon="solar:gallery-wide-bold"></iconify-icon> Make Card</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="mobileDrawerBackdrop" class="mobile-drawer-backdrop" aria-hidden="true"></div>
 
   <!-- Workspace Toolbar / Stats Bar -->
   <div class="workspace-toolbar">
     <div class="toolbar-stats">
       <span class="stat-item"><iconify-icon icon="solar:document-text-linear"></iconify-icon> Palabras: <strong id="statWords" class="stat-value">0</strong></span>
+      <span class="stat-sep">/</span>
       <span class="stat-item"><iconify-icon icon="solar:text-square-linear"></iconify-icon> Caracteres: <strong id="statChars" class="stat-value">0</strong></span>
+      <span class="stat-sep">/</span>
       <span class="stat-item"><iconify-icon icon="solar:clock-circle-linear"></iconify-icon> Tiempo: <strong id="statReadTime" class="stat-value">0 min</strong></span>
     </div>
 
     <div class="toolbar-controls">
-            <label class="toolbar-checkbox" title="Keep editor and preview scrolling in sync">
+      <!-- Sincronizar Toggle -->
+      <label class="toolbar-checkbox" title="Keep editor and preview scrolling in sync">
         <input type="checkbox" id="toggleSyncScroll" checked>
-        <span><iconify-icon icon="solar:round-transfer-vertical-linear"></iconify-icon> Sync Scroll</span>
+        <span><iconify-icon icon="solar:round-transfer-vertical-linear"></iconify-icon> Sincronizar</span>
       </label>
-      <button id="btnExportPdf" class="btn-icon-text btn-outline" title="Print or Export as Clean PDF">
+
+      <div class="toolbar-divider"></div>
+
+      <!-- File & Clean Slate -->
+      <input type="file" id="fileInput" accept=".md,.markdown,.txt,.pdf" style="display: none;">
+      <button id="btnOpenFile" class="btn-icon-text btn-outline" title="Open Local Markdown or PDF File">
+        <iconify-icon icon="solar:folder-open-bold"></iconify-icon>
+        <span>Abrir</span>
+      </button>
+      <button id="btnClear" class="btn-icon-text btn-outline" title="Clear Editor Content">
+        <iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>
+        <span>Limpiar</span>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <!-- Copy Operations -->
+      <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copy Raw Markdown Text">
+        <iconify-icon icon="solar:copy-linear"></iconify-icon>
+        <span>Copiar MD</span>
+      </button>
+      <button id="btnCopyHtml" class="btn-icon-text btn-outline" title="Copy Rendered HTML Code">
+        <iconify-icon icon="solar:code-2-bold"></iconify-icon>
+        <span>Copiar HTML</span>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <!-- Document Export Operations -->
+      <button id="btnExportPdf" class="btn-icon-text btn-outline" title="Print Document as Clean PDF">
         <iconify-icon icon="solar:printer-linear"></iconify-icon>
         <span>PDF</span>
       </button>
-      <button id="btnCopyMd" class="btn-icon-text btn-outline" title="Copiar Markdown">
-        <iconify-icon icon="solar:clipboard-text-linear"></iconify-icon>
-        <span>Copiar MD</span>
-      </button>
-      <button id="btnDownloadMd" class="btn-icon-text btn-outline" title="Descargar .md">
-        <iconify-icon icon="solar:file-download-linear"></iconify-icon>
-        <span>Descargar</span>
-      </button>
-      <button id="btnClear" class="btn-icon-text btn-outline" title="Limpiar Editor">
-        <iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>
-        <span>Limpiar</span>
+      <button id="btnExportHtml" class="btn-icon-text btn-outline" title="Export as Standalone HTML File">
+        <iconify-icon icon="solar:export-bold"></iconify-icon>
+        <span>Exportar HTML</span>
       </button>
     </div>
   </div>
 
-  <!-- Workspace Container -->
-  <main id="workspace" class="workspace-container mode-split">
-    <div class="pane pane-editor">
-            <!-- Pane Header -->
-      <div class="pane-card-header">
-        <div class="pane-title-group">
-          <span class="pane-badge">Editor</span>
-          <span class="pane-subinfo">Markdown</span>
-        </div>
-        <div class="pane-actions">
-          <button id="btnEditorFullscreen" class="btn-pane-action" type="button" title="Toggle Fullscreen Focus">
-            <iconify-icon icon="solar:maximize-square-linear"></iconify-icon>
-          </button>
-        </div>
-      </div>
 
-            <!-- Formatting Toolbar -->
-      <div class="editor-header-bar">
-        <div class="format-btn-group">
-          <!-- History Group -->
-          <div class="toolbar-group">
-            <button class="btn-format" data-action="undo" title="Undo (Ctrl+Z)"><iconify-icon icon="solar:undo-left-round-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="redo" title="Redo (Ctrl+Y)"><iconify-icon icon="solar:undo-right-round-bold"></iconify-icon></button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <!-- Headings Group -->
-          <div class="toolbar-group">
-            <button class="btn-format" data-action="h1" title="Heading 1 (#)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon><span class="btn-text-badge">1</span></button>
-            <button class="btn-format" data-action="h2" title="Heading 2 (##)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon><span class="btn-text-badge">2</span></button>
-            <button class="btn-format" data-action="h3" title="Heading 3 (###)"><iconify-icon icon="solar:text-cross-bold"></iconify-icon><span class="btn-text-badge">3</span></button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <!-- Text Style Group -->
-          <div class="toolbar-group">
-            <button class="btn-format" data-action="bold" title="Bold (Ctrl+B)"><iconify-icon icon="solar:text-bold-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="italic" title="Italic (Ctrl+I)"><iconify-icon icon="solar:text-italic-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="strike" title="Strikethrough (~~text~~)"><iconify-icon icon="solar:strikethrough-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="mark" title="Highlight (==text==)"><iconify-icon icon="solar:highlighter-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="code" title="Inline Code (`code`)"><iconify-icon icon="solar:code-2-bold"></iconify-icon></button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <!-- Lists Group -->
-          <div class="toolbar-group">
-            <button class="btn-format" data-action="ul" title="Bullet List (- item)"><iconify-icon icon="solar:list-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="ol" title="Numbered List (1. item)"><iconify-icon icon="solar:list-arrow-down-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="task" title="Task List (- [ ] item)"><iconify-icon icon="solar:check-square-bold"></iconify-icon></button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <!-- Blocks & Inserts Group -->
-          <div class="toolbar-group">
-            <button class="btn-format" data-action="quote" title="Blockquote (> text)"><iconify-icon icon="solar:quote-down-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="codeblock" title="Code Block (```lang)"><iconify-icon icon="solar:code-square-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="math" title="LaTeX Math Block ($$ formula $$)"><iconify-icon icon="solar:calculator-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="table" title="Insert Table (3x3)"><iconify-icon icon="solar:widget-2-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="hr" title="Horizontal Rule (---)"><iconify-icon icon="solar:minus-square-bold"></iconify-icon></button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <!-- Links & Media Group -->
-          <div class="toolbar-group">
-            <button class="btn-format" data-action="link" title="Insert Link (Ctrl+K)"><iconify-icon icon="solar:link-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="image" title="Insert Image (![alt](url))"><iconify-icon icon="solar:gallery-bold"></iconify-icon></button>
-            <button class="btn-format" data-action="details" title="Collapsible Details (<details>)"><iconify-icon icon="solar:alt-arrow-down-bold"></iconify-icon></button>
-          </div>
-        </div>
-        <span class="editor-mode-label">Markdown Source</span>
-      </div>
-      <textarea id="editor" class="editor-textarea" placeholder="Escribe o pega tu Markdown aquí, o arrastra un archivo .md..." spellcheck="false"></textarea>
-    </div>
-    <div id="paneResizer" class="pane-resizer" role="separator" aria-orientation="vertical" aria-label="Resize panels" title="Drag to resize, double-click to reset (50/50)">
-      <div class="resizer-handle"></div>
-    </div>
-    <div class="pane pane-preview">
-      <div id="preview" class="markdown-body"></div>
-    </div>
-  </main>
-
-  <!-- SEO Content Section -->
-  <section class="seo-section">
-    <div class="seo-container">
-      <div class="section-header">
-        <h1 class="section-title">El Visor de Markdown Moderno y Sin Retardos</h1>
-        <p class="section-subtitle">Diseñado para desarrolladores, redactores técnicos y creadores de contenido de inteligencia artificial que exigen máxima privacidad y compatibilidad con GitHub Flavored Markdown.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
-          <h2 class="feature-title">Privacidad Local 100%</h2>
-          <p class="feature-desc">Todo el procesamiento de archivos se ejecuta en la memoria local de tu navegador. Ningún documento viaja por la red.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon"><iconify-icon icon="solar:bolt-circle-bold"></iconify-icon></div>
-          <h2 class="feature-title">Renderizado Instantáneo</h2>
-          <p class="feature-desc">Desplazamiento sincronizado y respuesta inmediata sin retraso en documentos técnicos de gran tamaño.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon"><iconify-icon icon="solar:code-file-bold"></iconify-icon></div>
-          <h2 class="feature-title">Soporte GitHub Flavored</h2>
-          <p class="feature-desc">Tablas ordenadas, listas de tareas interactivas, notas al pie y resaltado de código en más de 180 lenguajes.</p>
-        </div>
-      </div>
-
-      <div class="section-header">
-        <h2 class="section-title">Guía de Sintaxis Markdown Rápida</h2>
-        <p class="section-subtitle">Haz clic en cualquier fragmento de sintaxis a continuación para copiarlo directamente.</p>
-      </div>
-
-      <div class="cheatsheet-box">
-        <nav class="cheatsheet-tabs" aria-label="Categorías de Sintaxis">
-          <button class="tab-btn active" data-tab="basic">Formato Básico</button>
-          <button class="tab-btn" data-tab="headers">Encabezados</button>
-          <button class="tab-btn" data-tab="tables">Tablas y Tareas</button>
-          <button class="tab-btn" data-tab="code">Código</button>
-        </nav>
-
-        <div id="tab-basic" class="tab-content active">
-          <h3 class="cheatsheet-tab-title">Formato Básico y Tipografía</h3>
-          <table class="syntax-table">
-            <thead>
-              <tr>
-                <th>Elemento</th>
-                <th>Sintaxis Markdown (Clic para copiar)</th>
-                <th>Resultado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Negrita</strong></td>
-                <td><code class="syntax-code">**Texto en negrita**</code></td>
-                <td><strong>Texto en negrita</strong></td>
-              </tr>
-              <tr>
-                <td><em>Cursiva</em></td>
-                <td><code class="syntax-code">*Texto en cursiva*</code></td>
-                <td><em>Texto en cursiva</em></td>
-              </tr>
-              <tr>
-                <td>Código en línea</td>
-                <td><code class="syntax-code">`const ok = true;`</code></td>
-                <td><code>const ok = true;</code></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div id="tab-headers" class="tab-content">
-          <h3 class="cheatsheet-tab-title">Encabezados y Listas</h3>
-          <table class="syntax-table">
-            <thead>
-              <tr>
-                <th>Elemento</th>
-                <th>Sintaxis Markdown</th>
-                <th>Resultado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Título H1</td>
-                <td><code class="syntax-code"># Título Principal</code></td>
-                <td><span style="font-size: 1.3rem; font-weight: 700;">Título Principal</span></td>
-              </tr>
-              <tr>
-                <td>Título H2</td>
-                <td><code class="syntax-code">## Subtítulo Secundario</code></td>
-                <td><span style="font-size: 1.15rem; font-weight: 600;">Subtítulo Secundario</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div id="tab-tables" class="tab-content">
-          <h3 class="cheatsheet-tab-title">Tablas GFM y Tareas</h3>
-          <table class="syntax-table">
-            <thead>
-              <tr>
-                <th>Elemento</th>
-                <th>Sintaxis Markdown</th>
-                <th>Resultado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Tabla</td>
-                <td><code class="syntax-code">| Col 1 | Col 2 |
-| :--- | :--- |</code></td>
-                <td>Tabla estructurada</td>
-              </tr>
-              <tr>
-                <td>Tarea Pendiente</td>
-                <td><code class="syntax-code">- [ ] Tarea pendiente</code></td>
-                <td>☐ Tarea pendiente</td>
-              </tr>
-              <tr>
-                <td>Tarea Completa</td>
-                <td><code class="syntax-code">- [x] Tarea hecha</code></td>
-                <td>☑ Tarea hecha</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div id="tab-code" class="tab-content">
-          <h3 class="cheatsheet-tab-title">Bloques de Código y Citas</h3>
-          <table class="syntax-table">
-            <thead>
-              <tr>
-                <th>Elemento</th>
-                <th>Sintaxis Markdown</th>
-                <th>Resultado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Bloque de Código</td>
-                <td><code class="syntax-code">```python
-print('Hola')
-```</code></td>
-                <td>Bloque con resaltado</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- App Footer -->
-  <footer class="app-footer">
-    <div class="footer-container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="/es/" class="brand">
-            <img src="/favicon.svg" alt="MDPreview Logo" class="brand-icon" width="28" height="28">
-            <span>MDPreview</span>
-          </a>
-          <p>Visor y Editor de Markdown en Línea Gratuito. Construido para desarrolladores y creadores globales.</p>
-        </div>
-
-        <div class="footer-links-group">
-          <div class="footer-col">
-            <div class="footer-col-title">Producto</div>
-            <ul>
-              <li><a href="/es/">Editor en Vivo</a></li>
-              <li><a href="#tab-basic">Guía de Sintaxis</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <div class="footer-col-title">Idiomas</div>
-            <ul>
-              <li><a href="/">English</a></li>
-              <li><a href="/es/">Español</a></li>
-              <li><a href="/pt/">Português</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <div class="footer-col-title">Legal</div>
-            <ul>
-              <li><a href="/about.html">Acerca de</a></li>
-              <li><a href="/privacy.html">Privacidad</a></li>
-              <li><a href="/terms.html">Términos</a></li>
-              <li><a href="/contact.html">Contacto</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <div class="footer-col-title">Ecosistema</div>
-            <ul>
-              <li><a href="https://tts.tangtangit.com" target="_blank" rel="noopener">Free TTS Studio <span class="tag-soon" style="background:#e0f2fe;color:#0284c7;font-size:0.65rem;padding:1px 4px;border-radius:3px;">Voz IA</span></a></li>
-              <li><a href="https://morning-quote.com" target="_blank" rel="noopener">Morning Quote <span class="tag-soon" style="background:#fef3c7;color:#b45309;font-size:0.65rem;padding:1px 4px;border-radius:3px;">Tarjetas</span></a></li>
-              <li><a href="https://tangtangit.com" target="_blank" rel="noopener">Blog del Creador</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div>&copy; 2026 MDPreview. Desarrollado con ❤️ por <a href="https://tangtangit.com" target="_blank" rel="noopener" style="color:var(--accent-color); font-weight:600; text-decoration:none;">糖糖it</a>.</div>
-        <div class="lang-selector">
-          <span>Idioma:</span>
-          <a href="/" class="lang-link">EN</a>
-          <a href="/es/" class="lang-link active">ES</a>
-          <a href="/pt/" class="lang-link">PT</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script type="module" src="/src/main.ts"></script>
-</body>
-</html>

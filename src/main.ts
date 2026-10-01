@@ -700,6 +700,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
+  // =========================================================================
+  // Mobile Drawer Navigation & Actions Handling
+  // =========================================================================
+  const btnMobileMenu = document.getElementById('btnMobileMenu');
+  const btnCloseMobileDrawer = document.getElementById('btnCloseMobileDrawer');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+
+  function openMobileDrawer() {
+    mobileDrawer?.classList.add('open');
+    mobileDrawerBackdrop?.classList.add('open');
+    mobileDrawer?.setAttribute('aria-hidden', 'false');
+    mobileDrawerBackdrop?.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeMobileDrawer() {
+    mobileDrawer?.classList.remove('open');
+    mobileDrawerBackdrop?.classList.remove('open');
+    mobileDrawer?.setAttribute('aria-hidden', 'true');
+    mobileDrawerBackdrop?.setAttribute('aria-hidden', 'true');
+  }
+
+  btnMobileMenu?.addEventListener('click', openMobileDrawer);
+  btnCloseMobileDrawer?.addEventListener('click', closeMobileDrawer);
+  mobileDrawerBackdrop?.addEventListener('click', closeMobileDrawer);
+
+  // Wire mobile drawer action buttons to existing handlers
+  document.getElementById('btnMobileCopyMd')?.addEventListener('click', () => {
+    navigator.clipboard.writeText(editor.value).then(() => {
+      showToast('Markdown copied to clipboard!');
+      closeMobileDrawer();
+    });
+  });
+
+  document.getElementById('btnMobileCopyHtml')?.addEventListener('click', () => {
+    copyHtmlAction();
+    closeMobileDrawer();
+  });
+
+  document.getElementById('btnMobileDownload')?.addEventListener('click', () => {
+    btnDownloadMd?.click();
+    closeMobileDrawer();
+  });
+
+  document.getElementById('btnMobileExportHtml')?.addEventListener('click', () => {
+    btnExportHtml?.click();
+    closeMobileDrawer();
+  });
+
+  document.getElementById('btnMobilePdf')?.addEventListener('click', () => {
+    btnExportPdf?.click();
+    closeMobileDrawer();
+  });
+
   const faqItems = document.querySelectorAll('.faq-item');
   faqItems.forEach(item => {
     const questionBtn = item.querySelector('.faq-question');

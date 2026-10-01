@@ -2303,3 +2303,438 @@ body.is-resizing .pane-preview {
     page-break-inside: avoid;
   }
 }
+
+/* ==========================================================================
+   Refined Top Header, Segmented Controller & Responsive Layout
+   ========================================================================== */
+
+.app-header {
+  height: 56px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  user-select: none;
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.nav-ecosystem {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-main);
+  background-color: var(--bg-elevated);
+}
+
+.nav-link.active {
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.header-control-item .select-control {
+  height: 32px;
+  padding: 0.25rem 1.6rem 0.25rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-main);
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background-position: right 0.45rem center;
+  transition: all 0.15s ease;
+}
+
+.header-control-item .select-control:hover {
+  border-color: var(--accent-color);
+}
+
+/* View Mode Segmented Pill */
+.view-mode-segmented {
+  display: inline-flex;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  gap: 2px;
+}
+
+.view-mode-segmented .btn-icon-text {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  height: 26px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.view-mode-segmented .btn-icon-text:hover {
+  color: var(--text-main);
+}
+
+.view-mode-segmented .btn-icon-text.active {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Primary Header Actions */
+.header-primary-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-header-action {
+  height: 32px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* Workspace Toolbar / Sub-bar */
+.workspace-toolbar {
+  height: 38px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  box-sizing: border-box;
+}
+
+.toolbar-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbar-stats .stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+}
+
+.toolbar-stats .stat-sep {
+  opacity: 0.4;
+  font-size: 0.75rem;
+}
+
+.toolbar-stats .stat-value {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.toolbar-controls .btn-icon-text {
+  height: 28px;
+  padding: 0 0.55rem;
+  font-size: 0.775rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.toolbar-controls .btn-icon-text:hover {
+  background-color: var(--bg-surface);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 16px;
+  background-color: var(--border-color);
+  margin: 0 0.25rem;
+}
+
+/* Mobile Hamburger Button (hidden on desktop) */
+.btn-mobile-menu {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 1.25rem;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-mobile-menu:hover {
+  background-color: var(--bg-elevated);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* Mobile Drawer Styles */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 300px;
+  height: 100vh;
+  background-color: var(--bg-surface);
+  border-left: 1px solid var(--border-color);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-drawer.open {
+  right: 0;
+}
+
+.mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-drawer-header {
+  height: 52px;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-drawer-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.btn-drawer-close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-drawer-close:hover {
+  color: var(--text-main);
+}
+
+.mobile-drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.drawer-group-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-main);
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  transition: all 0.15s ease;
+}
+
+.drawer-link.active {
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  font-weight: 600;
+  border-color: var(--accent-color);
+}
+
+.drawer-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.drawer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.5rem;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.drawer-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* Mobile Breakpoint Refinements (<= 768px) */
+@media (max-width: 768px) {
+  .app-header {
+    height: 50px;
+    padding: 0 0.85rem;
+  }
+
+  .nav-ecosystem,
+  .header-control-item,
+  .header-primary-actions {
+    display: none !important;
+  }
+
+  .btn-mobile-menu {
+    display: inline-flex;
+  }
+
+  .view-mode-segmented .btn-icon-text span {
+    display: none;
+  }
+
+  .view-mode-segmented .btn-icon-text {
+    padding: 0.25rem 0.5rem;
+    height: 28px;
+    font-size: 0.95rem;
+  }
+
+  .workspace-toolbar {
+    height: 34px;
+    padding: 0 0.85rem;
+  }
+
+  .toolbar-stats .stat-item:nth-child(n+4),
+  .toolbar-stats .stat-sep:nth-child(n+3) {
+    display: none;
+  }
+
+  .toolbar-controls .toolbar-divider:nth-child(n+4),
+  .toolbar-controls .btn-icon-text:nth-child(n+5) {
+    display: none;
+  }
+}
