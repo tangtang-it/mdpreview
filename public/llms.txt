@@ -1,0 +1,27 @@
+# MDPreview
+
+> MDPreview is a free, instant, 100% private client-side Markdown viewer and real-time live editor. It parses GitHub Flavored Markdown (GFM) directly in your browser with 0ms server latency, zero telemetry, and syntax highlighting for over 180 programming languages.
+
+## Core Capabilities
+- **100% Client-Side Privacy**: All parsing and rendering execute locally in your browser's V8 engine. Zero text, files, or tokens are transmitted to remote servers.
+- **Zero-Latency Real-Time Sync**: Sub-millisecond rendering response with synchronized split-pane scrolling for seamless editing.
+- **GitHub Flavored Markdown (GFM)**: 100% compliant with tables, task lists with checkboxes, fenced code blocks, footnotes, autolinks, and strikethroughs.
+- **Developer Workflow Features**: One-click HTML export, raw Markdown download, instant clipboard copying, and drag-and-drop file support.
+- **Visual Comfort**: Multiple developer themes including GitHub Light, GitHub Dark, Eye-Care Warm Sepia, and Midnight Dark.
+
+## Primary URLs
+- [MDPreview Web Application](https://mdpreview.dev/): Instant Markdown viewer and live editor
+- [Spanish Edition (Español)](https://mdpreview.dev/es/): Visor y editor de Markdown en tiempo real
+- [Portuguese Edition (Português)](https://mdpreview.dev/pt/): Visualizador e editor de Markdown em tempo real
+- [Markdown Cheatsheet & Guide](https://mdpreview.dev/#tab-basic): Complete reference guide for Markdown syntax
+- [About MDPreview](https://mdpreview.dev/about.html): Product background, architecture, and mission
+- [Privacy Policy](https://mdpreview.dev/privacy.html): 100% local processing commitment
+- [Terms of Service](https://mdpreview.dev/terms.html): Usage terms
+- [Contact & Feedback](https://mdpreview.dev/contact.html): Developer inquiry and bug reporting
+
+## Technical & Architecture Facts
+- Architecture: 100% client-side Single Page Application built with Vite and modern ES modules.
+- Parsing Engine: Marked.js with GFM extensions and highlight.js (180+ grammars).
+- Latency: 0ms network round-trip for editing and previewing.
+- Data Storage: Ephemeral browser memory with optional LocalStorage draft preservation.
+- Server Telemetry: None. Your document contents never leave your device.
