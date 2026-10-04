@@ -1,0 +1,30 @@
+name: 🐛 Bug Report
+description: Create a report to help us improve MdPreview
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report an issue!
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & Operating System
+      placeholder: e.g. Chrome 128 / macOS 14.5 or Edge / Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      placeholder: A clear and concise description of what went wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: 1. Go to '...'
+2. Paste Markdown '...'
+3. Observe error
+    validations:
+      required: true
